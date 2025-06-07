@@ -341,13 +341,13 @@ public abstract class Game {
         String[] numStrings = numStringBuilder.toString().split(Character.toString(SEPARATOR));
         if (numStrings.length != 4)
             return false;
-        int[] nums = new int[4];
+        int[] values = new int[4];
         for (int i = 0; i < 4; i++){
-            nums[i] = Integer.parseInt(numStrings[i]);
+            values[i] = Integer.parseInt(numStrings[i]);
         }
-        Arrays.sort(nums);
+        Arrays.sort(values);
         Arrays.sort(gamePane.question);
-        return Arrays.equals(nums, gamePane.question);
+        return Arrays.equals(values, gamePane.question);
     }
     private int initCalsArrayList(ArrayList<double[]> cals, char[] simplifiedChars){
         StringBuilder numStringBuilder;

@@ -6,7 +6,7 @@ class Calculate{
         new Operator('*'), 
         new Operator('/')
     };
-    public String solution(int... nums){
+    public String solution(int... values){
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++){
                 if (j == i) continue;
@@ -15,15 +15,15 @@ class Calculate{
                     for (int m = 0; m < 4; m++) {
                         if (m == k || m == j || m == i) continue;
                         String way;
-                        way = chanceOne(nums[i],nums[j],nums[k],nums[m]);
+                        way = chanceOne(values[i], values[j], values[k], values[m]);
                         if (!way.equals("-1")) return way;
-                        way = chanceTwo(nums[i],nums[j],nums[k],nums[m]);
+                        way = chanceTwo(values[i], values[j], values[k], values[m]);
                         if (!way.equals("-1")) return way;
-                        way = chanceThree(nums[i],nums[j],nums[k],nums[m]);
+                        way = chanceThree(values[i], values[j], values[k], values[m]);
                         if (!way.equals("-1")) return way;
-                        way = chanceFour(nums[i],nums[j],nums[k],nums[m]);
+                        way = chanceFour(values[i], values[j], values[k], values[m]);
                         if (!way.equals("-1")) return way;
-                        way = chanceFive(nums[i],nums[j],nums[k],nums[m]);
+                        way = chanceFive(values[i], values[j], values[k], values[m]);
                         if (!way.equals("-1")) return way;
                     }
                 }
@@ -32,21 +32,21 @@ class Calculate{
         return "-1";
     }
     //((axb)xc)xd
-    private String chanceOne(int... nums){
+    private String chanceOne(int... values){
         double temp1, temp2, temp3;
         for (Operator i: ops){
-            temp1 = i.operate(nums[0], nums[1]);
+            temp1 = i.operate(values[0], values[1]);
             for (Operator j: ops){
-                temp2 = j.operate(temp1, nums[2]);
+                temp2 = j.operate(temp1, values[2]);
                 for (Operator k: ops){
-                    temp3 = k.operate(temp2, nums[3]);
+                    temp3 = k.operate(temp2, values[3]);
                     if (is24(temp3)){
                         String[] par = {"(","(",")",")"};
                         if (j.level <= i.level) par[2] = par[1] = "";
                         if (k.level <= j.level) par[0] = par[3] = "";
-                        return par[0] + par[1] + nums[0] + i.opString+nums[1]
-                                + par[2] + j.opString + nums[2]
-                                + par[3] + k.opString + nums[3];
+                        return par[0] + par[1] + values[0] + i.opString+ values[1]
+                                + par[2] + j.opString + values[2]
+                                + par[3] + k.opString + values[3];
                     }
                 }
             }
@@ -54,19 +54,19 @@ class Calculate{
         return "-1";
     }
     // (ax(bxc))xd
-    private String chanceTwo(int... nums){
+    private String chanceTwo(int... values){
         double temp1, temp2, temp3;
         for (Operator i: ops){
-            temp1 = i.operate(nums[1], nums[2]);
+            temp1 = i.operate(values[1], values[2]);
             for (Operator j: ops){
-                temp2 = j.operate(nums[0], temp1);
+                temp2 = j.operate(values[0], temp1);
                 for (Operator k: ops){
-                    temp3 = k.operate(temp2, nums[3]);
+                    temp3 = k.operate(temp2, values[3]);
                     if (is24(temp3)){
                         String[] par = {"(","(",")",")"};
                         if (j.level < i.level || (j.level == i.level && j.method == 1)) par[2] = par[1] = "";
                         if (k.level <= j.level) par[0] = par[3] = "";
-                        return par[0]+nums[0]+j.opString+par[1]+nums[1]+i.opString+nums[2]+par[2]+par[3]+k.opString+nums[3];
+                        return par[0]+ values[0]+j.opString+par[1]+ values[1]+i.opString+ values[2]+par[2]+par[3]+k.opString+ values[3];
                     }
                 }
             }
@@ -74,19 +74,19 @@ class Calculate{
         return "-1";
     }
     //(axb)x(cxd)
-    private String chanceThree(int... nums){
+    private String chanceThree(int... values){
         double temp1, temp2, temp3;
         for (Operator i: ops){
-            temp1 = i.operate(nums[0], nums[1]);
+            temp1 = i.operate(values[0], values[1]);
             for (Operator j: ops){
-                temp2 = j.operate(nums[2], nums[3]);
+                temp2 = j.operate(values[2], values[3]);
                 for (Operator k: ops){
                     temp3 = k.operate(temp1, temp2);
                     if (is24(temp3)){
                         String[] par = {"(",")","(",")"};
                         if (k.level <= i.level) par[0] = par[1] = "";
                         if (k.level < j.level || (k.level == j.level && k.level == 1)) par[2] = par[3] = "";
-                        return par[0]+nums[0]+i.opString+nums[1]+par[1]+k.opString+par[2]+nums[2]+j.opString+nums[3]+par[3];
+                        return par[0]+ values[0]+i.opString+ values[1]+par[1]+k.opString+par[2]+ values[2]+j.opString+ values[3]+par[3];
                     }
                 }
             }
@@ -94,19 +94,19 @@ class Calculate{
         return "-1";
     }
     //ax((bxc)xd)
-    private String chanceFour(int... nums){
+    private String chanceFour(int... values){
         double temp1, temp2, temp3;
         for (Operator i: ops){
-            temp1 = i.operate(nums[1], nums[2]);
+            temp1 = i.operate(values[1], values[2]);
             for (Operator j: ops){
-                temp2 = j.operate(temp1, nums[3]);
+                temp2 = j.operate(temp1, values[3]);
                 for (Operator k: ops){
-                    temp3 = k.operate(nums[0], temp2);
+                    temp3 = k.operate(values[0], temp2);
                     if (is24(temp3)){
                         String[] par = {"(","(",")",")"};
                         if (j.level <= i.level) par[2] = par[1] = "";
                         if (k.level < j.level || (k.level == j.level && k.method == 1)) par[0] = par[3] = "";
-                        return nums[0]+k.opString+par[0]+par[1]+nums[1]+i.opString+nums[2]+par[2]+j.opString+nums[3]+par[3];
+                        return values[0]+k.opString+par[0]+par[1]+ values[1]+i.opString+ values[2]+par[2]+j.opString+ values[3]+par[3];
                     }
                 }
             }
@@ -114,19 +114,19 @@ class Calculate{
         return "-1";
     }
     //ax(bx(cxd))
-    private String chanceFive(int... nums){
+    private String chanceFive(int... values){
         double temp1, temp2, temp3;
         for (Operator i: ops){
-            temp1 = i.operate(nums[2], nums[3]);
+            temp1 = i.operate(values[2], values[3]);
             for (Operator j: ops){
-                temp2 = j.operate(nums[1], temp1);
+                temp2 = j.operate(values[1], temp1);
                 for (Operator k: ops){
-                    temp3 = k.operate(nums[0], temp2);
+                    temp3 = k.operate(values[0], temp2);
                     if (is24(temp3)){
                         String[] par = {"(","(",")",")"};
                         if (j.level < i.level || (j.level == i.level && j.method == 1)) par[2] = par[1] = "";
                         if (k.level < j.level || (k.level == j.level && k.method == 1)) par[0] = par[3] = "";
-                        return nums[0]+k.opString+par[0]+nums[1]+j.opString+par[1]+nums[2]+i.opString+nums[3]+par[2]+par[3];
+                        return values[0]+k.opString+par[0]+ values[1]+j.opString+par[1]+ values[2]+i.opString+ values[3]+par[2]+par[3];
                     }
                 }
             }
@@ -146,13 +146,13 @@ public class GameLogic extends Thread {
     @Override
     public void run(){
         String solution = "-1";
-        int[] nums = new int[4];
+        int[] values = new int[4];
         while (solution.equals("-1")) {
             Calculate c = new Calculate();
             for (int i = 0; i < 4; i++) {
-                nums[i] = (int) ((Math.random()) * 13) + 1;
+                values[i] = (int) ((Math.random()) * 13) + 1;
             }
-            solution = c.solution(nums);
+            solution = c.solution(values);
         }
         int[] res = new int[]{-1, -1, -1, -1};
         boolean[] index = new boolean[]{false, false, false, false};
@@ -161,7 +161,7 @@ public class GameLogic extends Thread {
             do {
                 tempIndex = (int) (Math.random() * 4);
             } while (index[tempIndex]);
-            res[i] = nums[tempIndex];
+            res[i] = values[tempIndex];
             index[tempIndex] = true;
         }
         questionString = res[0] + SEPARATOR

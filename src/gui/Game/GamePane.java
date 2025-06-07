@@ -12,7 +12,6 @@ public class GamePane extends JPanel {
     JLabel cardStack, resultLabel, scoreLabel, solvedProblems;
     int[] question;
     String key;
-    Cards cards = new Cards();
     CardFrame[] cardFrames, cardSelects;
     Operators[] ops;
     Pars[] leftPars, rightPars;
@@ -20,9 +19,9 @@ public class GamePane extends JPanel {
     GroupLayout gl;
     JTextField inputField;
     StartGameWindow owner;
-    GameLogic gameLogic = new GameLogic();
     int cardFrameZOrder;
-
+    private GameLogic gameLogic = new GameLogic();
+    private final Cards cards = new Cards();
     //this constructor is called before the select mode button is pressed
     //any statements or variable in this constructor however not related to the graph is because \
     //calling it in advance can enhance the performance.
@@ -33,7 +32,6 @@ public class GamePane extends JPanel {
         initUI();
         setLayout();
     }
-
     private void initUI() {
         Font font = new Font("微软雅黑", Font.BOLD, 16);
         gameTimer = new Time();
@@ -278,20 +276,17 @@ public class GamePane extends JPanel {
             }
         }
     }
-
-    //issue: next question pressed before question get ready
+    //generate the next question right after the last one is used
     public void newQuestion() {
-        EventQueue.invokeLater(() -> {
+        EventQueue.invokeLater(() -> { //invoke this after UI refreshes
             String[] QA;
             inputField.setText("");
             if (gameLogic.isAlive()) {
                 try {
-                    gameLogic.join();
+                    gameLogic.join(); // to avoid calling the question before it is generated
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
-                owner.revalidate();
-                owner.repaint();
             }
             QA = gameLogic.getQuestionString().split(GameLogic.SEPARATOR);
             gameLogic = new GameLogic();
