@@ -35,7 +35,7 @@ public class Welcome extends JFrame{
         imageIcon = new ImageIcon(
                 Objects.requireNonNull(getClass().getResource("/gui/images/TitleImage.png"))
         );
-        Image titleImage = imageIcon.getImage().getScaledInstance(520, 236, Image.SCALE_SMOOTH);
+        Image titleImage = imageIcon.getImage().getScaledInstance(521, 300, Image.SCALE_SMOOTH);
         ImageIcon imageIcon = new ImageIcon(titleImage);
         words.setIcon(imageIcon);
         setLayout();
@@ -49,13 +49,13 @@ public class Welcome extends JFrame{
     }
     // resize imageIcon when component (JLabel) resized
     private void titleImageResize(){
-        words.setSize((int)(getWidth()*0.8), (int)(getHeight()*0.8));
+        words.setSize((int)(getWidth() * 0.8), (int)(getHeight() * 0.8));
         double width, height;
         width = words.getWidth();
         height = words.getHeight();
-        if (width > height*1500/680)
-            width = height*1500/680;
-        else
+        if (width > height * 1500 / 680)
+            width = height * 1500 / 680;
+        else if (width < height * 1500 / 680)
             height = width*680/1500;
         Image titleImage = imageIcon.getImage().getScaledInstance((int)width, (int)height, Image.SCALE_SMOOTH);
         ImageIcon newIcon = new ImageIcon(titleImage);

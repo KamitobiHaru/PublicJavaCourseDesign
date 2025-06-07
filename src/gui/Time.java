@@ -43,7 +43,6 @@ public class Time extends JLabel{
             currentSec -= 60;
         }
     }
-    // formatted text
     private void setUI(){
         setText(currentMin + String.format(":%02d    ", currentSec));
     }

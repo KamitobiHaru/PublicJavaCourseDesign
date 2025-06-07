@@ -6,7 +6,7 @@ public class LogInDial extends JDialog{
 	private String name = null;
 	private char[] password;
 	private JLabel nameLabel, passwordLabel, localInfo, incorrectInfo;
-	private JButton confirmButton, cancelButton, newPlayer;
+	private JButton confirmButton, guestButton, newPlayer;
 	private JTextField nameTextField;
 	private JPasswordField passwordField;
 	private final static PlayersIO PLAYERS_IO = new PlayersIO();
@@ -33,9 +33,9 @@ public class LogInDial extends JDialog{
         confirmButton = new JButton("确认");
         confirmButton.setBackground(Color.GRAY);
         confirmButton.setForeground(Color.WHITE);
-        cancelButton = new JButton("以游客身份游玩");
-        cancelButton.setBackground(Color.GRAY);
-        cancelButton.setForeground(Color.WHITE);
+        guestButton = new JButton("以游客身份游玩");
+        guestButton.setBackground(Color.GRAY);
+        guestButton.setForeground(Color.WHITE);
         newPlayer = new JButton("新玩家...");
         newPlayer.setBackground(Color.GRAY);   
         newPlayer.setForeground(Color.WHITE);     
@@ -61,7 +61,7 @@ public class LogInDial extends JDialog{
                 .put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "confirm");
         confirmButton.getActionMap().put("confirm", confirm);
         confirmButton.addActionListener(confirm);
-        cancelButton.addActionListener((ignoredEvent) -> {
+        guestButton.addActionListener((ignoredEvent) -> {
             player.setName("Guest");
             player.setHighScoreArray(PLAYERS_IO.getPlayerHigh("Guest"));
             playerSet = true;
@@ -88,7 +88,7 @@ public class LogInDial extends JDialog{
             .addGap(0,0,Integer.MAX_VALUE);
         var buttonSGroup = gl.createSequentialGroup()
             .addComponent(confirmButton)
-            .addComponent(cancelButton)
+            .addComponent(guestButton)
             .addGap(0,0,Integer.MAX_VALUE)
             .addComponent(newPlayer);
         var namePGroup = gl.createParallelGroup(GroupLayout.Alignment.LEADING,false)
@@ -101,7 +101,7 @@ public class LogInDial extends JDialog{
             .addGap(0,0,Integer.MAX_VALUE);
         var buttonPGroup = gl.createParallelGroup(GroupLayout.Alignment.LEADING,false)
             .addComponent(confirmButton)
-            .addComponent(cancelButton)
+            .addComponent(guestButton)
             .addGap(0,0,Integer.MAX_VALUE)
             .addComponent(newPlayer);
         gl.setHorizontalGroup(
