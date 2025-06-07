@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import static javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW;
 public abstract class Game {
-    GamePane gamePane;
+    protected GamePane gamePane;
     protected int score = 0;
     protected int mode;
     public static final int
@@ -33,12 +33,12 @@ public abstract class Game {
             SUBTRACT = 1,
             MULTIPLY = 2,
             DIVIDE = 3;
-    private final static int INIT_SUCCEED = 0;
+    public final static int INIT_SUCCEED = 0;
     private boolean dragging;
     private Cards.Card cardSelected;
     private CardFrame cardDragged;
     private Point dragOffset;
-    protected int questionCompleted = 0;
+    private int questionCompleted = 0;
     protected CurrentPlayer player;
     protected GameResultDial result;
     public Game(GamePane gamePane, int mode, int timeMin, int timeSec, CurrentPlayer player){
