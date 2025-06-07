@@ -26,18 +26,16 @@ public class GameResultDial extends JDialog{
         this.score.setFont(new Font("微软雅黑", Font.BOLD, 20));
         this.oriHi = new JLabel("玩家历史最高得分：" + oriHighScore);
         this.oriHi.setFont(new Font("微软雅黑", Font.PLAIN, 20));
-        if (score > oriHighScore) {
+        if (score > oriHighScore)
             this.oriHi.setText(oriHi.getText() + "  新纪录！");
-        }
         this.uniHi = new JLabel("本地玩家最高得分：" + oriHighScore);
         this.uniHi.setFont(new Font("微软雅黑", Font.PLAIN, 20));
         confirm = new JButton("返回标题界面");
         confirm.setFont(new Font("微软雅黑", Font.BOLD, 18));
         confirm.setBackground(Color.GRAY);
         confirm.setForeground(Color.WHITE);
-        if (score > uniHighScore) {
+        if (score > uniHighScore)
             this.uniHi.setText(uniHi.getText() + "  新纪录！");
-        }
     }
     private void setConfirmAction(){
         var conf = new AbstractAction(){

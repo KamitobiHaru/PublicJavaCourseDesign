@@ -197,7 +197,6 @@ public class StartGameWindow extends JFrame{
         remove(gamePane);
         game = null;
         gamePane = null;
-        //setStatusBar("就绪。");
         if (goOn){
             setSelectModePane();
             selectModePane.setVisible(true);
