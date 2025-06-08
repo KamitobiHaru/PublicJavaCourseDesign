@@ -42,6 +42,12 @@ public abstract class Game {
     private int questionCompleted = 0;
     protected CurrentPlayer player;
     protected GameResultDial result;
+    private final Operator[] operators = {
+            new Operator('+'),
+            new Operator('-'),
+            new Operator('*'),
+            new Operator('/')
+    };
     public Game(GamePane gamePane, int mode, int timeMin, int timeSec, CurrentPlayer player){
         this.gamePane = gamePane;
         this.player = player;
@@ -254,18 +260,29 @@ public abstract class Game {
         //check if card is empty
         if (gamePane.cardSelects[0].isEmpty() || gamePane.cardSelects[1].isEmpty() || gamePane.cardSelects[2].isEmpty())
             return result;
-        ArrayList<double[]> cal = new ArrayList<>();
-        //(AValue BValue opIndex(0,1,2,3) level(1,2,3,4,...))
-        cal.add(new double[] {gamePane.cardSelects[0].card.getValue(), gamePane.cardSelects[1].card.getValue(), -1, -1});
-        cal.add(new double[] {gamePane.cardSelects[1].card.getValue(), gamePane.cardSelects[2].card.getValue(), -1, -1});
-        cal.add(new double[] {gamePane.cardSelects[2].card.getValue(), gamePane.cardSelects[3].card.getValue(), -1, -1});
-        for (int i = 0; i < 3; i ++){
+        for (int i = 0; i < 3; i ++) {
             if (gamePane.ops[i].getSelectedIndex() - 1 == -1)
                 return NO_OPERATOR;
+        }
             // operators in JComboBoxes are indexed as 1, 2, 3, 4,
             // while those in arrays of Operator is 0, 1, 2, 3
-            cal.get(i)[2] = gamePane.ops[i].getSelectedIndex() - 1;
-        }
+        ArrayList<SubExpression> cal = new ArrayList<>();
+        //(AValue BValue opIndex(0,1,2,3) level(1,2,3,4,...))
+        cal.add(new SubExpression(
+                gamePane.cardSelects[0].card.getValue(),
+                gamePane.cardSelects[1].card.getValue(),
+                operators[gamePane.ops[0].getSelectedIndex() - 1]
+        ));
+        cal.add(new SubExpression(
+                gamePane.cardSelects[1].card.getValue(),
+                gamePane.cardSelects[2].card.getValue(),
+                operators[gamePane.ops[1].getSelectedIndex() - 1]
+        ));
+        cal.add(new SubExpression(
+                gamePane.cardSelects[2].card.getValue(),
+                gamePane.cardSelects[3].card.getValue(),
+                operators[gamePane.ops[2].getSelectedIndex() - 1]
+        ));
         // check brackets selected
         char[] parSelected = new char[16];
         for (int i = 0; i < 4; i++) {
@@ -281,8 +298,8 @@ public abstract class Game {
         // this mode is not removed ...
         // considering that the position is set so that it is more efficient than transferring to string
         for (int i = 0; i < 3; i ++){ // i: index of ops
-            int level = setSelectLevels(cal, i, parSelected);
-            cal.get(i)[3] = level;
+            int level = setSelectLevels(i, parSelected);
+            cal.get(i).setLevel(cal.get(i).getLevel() + level);
         }
         return calculateArrays(cal, result);
     }
@@ -294,10 +311,8 @@ public abstract class Game {
         }
         if (!checkNumLegal(simplifiedChars))
             return WRONG_CARD_VALUES;
-        ArrayList<double[]> cals = new ArrayList<>();
-        // double 1, double 2, op, level, opIndex
+        ArrayList<SubExpression> cals = new ArrayList<>();
         int tempReturn;
-
         if ((tempReturn = initCalsArrayList(cals, simplifiedChars)) != INIT_SUCCEED){
             return tempReturn;
         }
@@ -350,12 +365,12 @@ public abstract class Game {
         Arrays.sort(gamePane.question);
         return Arrays.equals(values, gamePane.question);
     }
-    private int initCalsArrayList(ArrayList<double[]> cals, char[] simplifiedChars){
+    private int initCalsArrayList(ArrayList<SubExpression> cals, char[] simplifiedChars){
         StringBuilder numStringBuilder;
         //traverse through all operators to check the front and hind values and add to ArrayList cal
         for (int i = 0; i < simplifiedChars.length; i ++){
             if (isOperator(simplifiedChars[i])) {
-                double[] temp = new double[5];
+                SubExpression temp = new SubExpression();
                 boolean[] isolated = {false, false};
                 //parse left
                 numStringBuilder = new StringBuilder();
@@ -377,7 +392,7 @@ public abstract class Game {
                 }
                 try {
                     if (!numStringBuilder.isEmpty())
-                        temp[0] = Integer.parseInt(numStringBuilder.toString());
+                        temp.setNum1(Integer.parseInt(numStringBuilder.toString()));
                     else if (isOperator(simplifiedChars[i])){
                         isolated[0] = true;
                     }
@@ -400,7 +415,7 @@ public abstract class Game {
                 }
                 try {
                     if (!numStringBuilder.isEmpty())
-                        temp[1] = Integer.parseInt(numStringBuilder.toString());
+                        temp.setNum2(Integer.parseInt(numStringBuilder.toString()));
                     else if (isOperator(simplifiedChars[i])){
                         isolated[1] = true;
                     }
@@ -411,7 +426,7 @@ public abstract class Game {
                     return WRONG_CARD_VALUES;
                 else if (isolated[0])
                     return WRONG_OPERATORS;
-                temp[2] = switch (simplifiedChars[i]){
+                temp.setOperator(operators[switch (simplifiedChars[i]){
                     case '+' -> ADD;
                     case '-' -> SUBTRACT;
                     case '*' -> MULTIPLY;
@@ -420,9 +435,9 @@ public abstract class Game {
                         new ExceptionDial("运算符推演错误。");
                         throw new RuntimeException("WrongOperator");
                     }
-                };
-                temp[3] = (simplifiedChars[i] == '+' || simplifiedChars[i] == '-') ? 1 : 2;
-                temp[4] = i;
+                }]);
+                temp.setLevel((simplifiedChars[i] == '+' || simplifiedChars[i] == '-') ? 1 : 2);
+                temp.setOpIndex(i);
                 cals.add(temp);
             }
         }
@@ -479,16 +494,8 @@ public abstract class Game {
         }
         return false;
     }
-    private int setSelectLevels(ArrayList<double[]> cal, int i, char[] parSelected) {
+    private int setSelectLevels(int i, char[] parSelected) {
         int level = 0;
-        switch ((int) cal.get(i)[2]){
-            case 0, 1: level ++; break;
-            case 2, 3: level += 2; break;
-            default: {
-                new ExceptionDial("运算符推演错误。").setVisible(true);
-                throw new RuntimeException("WrongOperator");
-            }
-        }
         int leftCount = 0, rightCount = 0;
         //parse left
         for (int j = 4 * i + 3; j >= 0; j --){
@@ -507,55 +514,48 @@ public abstract class Game {
         level += 10 * Math.max(leftCount, rightCount);
         return level;
     }
-    private void addInputParsLevel(ArrayList<double[]> cals, char[] simplifiedChars){
+    private void addInputParsLevel(ArrayList<SubExpression> cals, char[] simplifiedChars){
         // traverse through operators and count pars in the left and right of it
-        for (double[] i: cals){
+        for (SubExpression i : cals){
             int leftCount = 0, rightCount = 0;
             //parse left
-            for(int j = (int)i[4] - 1; j >= 0; j --){
+            for(int j = i.getOpIndex() - 1; j >= 0; j --){
                 if (simplifiedChars[j] == ')')
                     break;
                 if (simplifiedChars[j] == '(')
                     leftCount ++;
             }
             //parse right
-            for (int j = (int)i[4] + 1; j < simplifiedChars.length; j ++){
+            for (int j = i.getOpIndex() + 1; j < simplifiedChars.length; j ++){
                 if (simplifiedChars[j] == '(')
                     break;
                 if (simplifiedChars[j] == ')')
                     rightCount ++;
             }
-            i[3] += 10 * Math.max(leftCount, rightCount);
+            i.setLevel(i.getLevel() + 10 * Math.max(leftCount, rightCount));
         }
     }
-    private double calculateArrays(ArrayList<double[]> cal, double result){
-        Operator[] operators = {
-                new Operator('+'),
-                new Operator('-'),
-                new Operator('*'),
-                new Operator('/')
-        };
+    private double calculateArrays(ArrayList<SubExpression> cal, double result){
         while (!cal.isEmpty()){
             double maxLevel = 0;
-            for (double[] doubles : cal) {
-                maxLevel = Math.max(doubles[3], maxLevel);
+            for (SubExpression subExpression : cal) {
+                maxLevel = Math.max(subExpression.getLevel(), maxLevel);
             }
             for (int i = 0; i < cal.size(); i++){
-                if (cal.get(i)[3] == maxLevel){
+                if (cal.get(i).getLevel() == maxLevel){
                     double formerLevel = 0; double latterLevel = 0;
-                    result = operators[(int)cal.get(i)[2]].operate(cal.get(i)[0], cal.get(i)[1]);
+                    result = cal.get(i).operate();
                     if (i + 1 < cal.size())
-                        latterLevel = cal.get(i+1)[3];
+                        latterLevel = cal.get(i+1).getLevel();
                     if (i - 1 >= 0){
-                        formerLevel = cal.get(i-1)[3];
+                        formerLevel = cal.get(i-1).getLevel();
                     }
                     if (formerLevel > latterLevel){
-                        cal.get(i-1)[1] = result;
-
+                        cal.get(i-1).setNum2(result);
                     } else if (latterLevel > formerLevel){
-                        cal.get(i+1)[0] = result;
+                        cal.get(i+1).setNum1(result);
                     } else if (latterLevel > 0){
-                        cal.get(i-1)[1] = result;
+                        cal.get(i-1).setNum2(result);
                     }
                     cal.remove(i);
                     break;
