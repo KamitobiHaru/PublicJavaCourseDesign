@@ -264,21 +264,20 @@ public abstract class Game {
             if (gamePane.ops[i].getSelectedIndex() - 1 == -1)
                 return NO_OPERATOR;
         }
-            // operators in JComboBoxes are indexed as 1, 2, 3, 4,
-            // while those in arrays of Operator is 0, 1, 2, 3
-        ArrayList<SubExpression> cal = new ArrayList<>();
-        //(AValue BValue opIndex(0,1,2,3) level(1,2,3,4,...))
-        cal.add(new SubExpression(
+        // operators in JComboBoxes are indexed as 1, 2, 3, 4,
+        // while those in arrays of Operator is 0, 1, 2, 3
+        ArrayList<SubExpression> subExpressions = new ArrayList<>();
+        subExpressions.add(new SubExpression(
                 gamePane.cardSelects[0].card.getValue(),
                 gamePane.cardSelects[1].card.getValue(),
                 operators[gamePane.ops[0].getSelectedIndex() - 1]
         ));
-        cal.add(new SubExpression(
+        subExpressions.add(new SubExpression(
                 gamePane.cardSelects[1].card.getValue(),
                 gamePane.cardSelects[2].card.getValue(),
                 operators[gamePane.ops[1].getSelectedIndex() - 1]
         ));
-        cal.add(new SubExpression(
+        subExpressions.add(new SubExpression(
                 gamePane.cardSelects[2].card.getValue(),
                 gamePane.cardSelects[3].card.getValue(),
                 operators[gamePane.ops[2].getSelectedIndex() - 1]
@@ -297,31 +296,30 @@ public abstract class Game {
         // counting level is not yet encapsulated as data in two modes are not store in the same way
         // this mode is not removed ...
         // considering that the position is set so that it is more efficient than transferring to string
-        for (int i = 0; i < 3; i ++){ // i: index of ops
-            int level = setSelectLevels(i, parSelected);
-            cal.get(i).setLevel(cal.get(i).getLevel() + level);
+        for (int opIndex = 0; opIndex < 3; opIndex++){ // opIndex: index of ops
+            int level = setSelectLevels(opIndex, parSelected);
+            subExpressions.get(opIndex).setLevel(subExpressions.get(opIndex).getLevel() + level);
         }
-        return calculateArrays(cal, result);
+        return calculateArrays(subExpressions, result);
     }
-    private double checkInputResult(String s){
+    private double checkInputResult(String inputString){
         // convert input string to char array and simplify
-        char[] simplifiedChars = simplifyInput(s);
+        char[] simplifiedChars = simplifyInput(inputString);
         if (simplifiedChars == null){
             return SYNTAX_ERROR;
         }
         if (!checkNumLegal(simplifiedChars))
             return WRONG_CARD_VALUES;
-        ArrayList<SubExpression> cals = new ArrayList<>();
+        ArrayList<SubExpression> subExpressions = new ArrayList<>();
         int tempReturn;
-        if ((tempReturn = initCalsArrayList(cals, simplifiedChars)) != INIT_SUCCEED){
+        if ((tempReturn = initSubExpressionsArrayList(subExpressions, simplifiedChars)) != INIT_SUCCEED)
             return tempReturn;
-        }
         cancelRedundantPars(simplifiedChars);
         //check if pars are in pairs
         if (parsNotPairs(simplifiedChars))
             return PARS_NOT_PAIRS;
-        addInputParsLevel(cals, simplifiedChars);
-        return(calculateArrays(cals, NO_VALUE));
+        addInputParsLevel(subExpressions, simplifiedChars);
+        return(calculateArrays(subExpressions, NO_VALUE));
     }
     private boolean isDigit(char i){
         return (i > 47 && i < 58);
@@ -334,10 +332,10 @@ public abstract class Game {
     }
     private char[] simplifyInput(String s){
         StringBuilder simplifyStringBuilder = new StringBuilder();
-        for (char i: s.toCharArray()){
-            if (isDigit(i) || isOperator(i) || isPar(i)){
-                simplifyStringBuilder.append(i);
-            } else if (i != ' '){
+        for (char charEach : s.toCharArray()){
+            if (isDigit(charEach) || isOperator(charEach) || isPar(charEach)){
+                simplifyStringBuilder.append(charEach);
+            } else if (charEach != ' '){
                 return null;
             }
         }
@@ -346,11 +344,11 @@ public abstract class Game {
     private boolean checkNumLegal(char[] simplifiedChars){
         char SEPARATOR = ' ';
         StringBuilder numStringBuilder = new StringBuilder();
-        for (char i: simplifiedChars){
-            if (isDigit(i))
-                numStringBuilder.append(i);
+        for (char simplifiedChar : simplifiedChars){
+            if (isDigit(simplifiedChar))
+                numStringBuilder.append(simplifiedChar);
             else if (!numStringBuilder.isEmpty()
-                    && isOperator(i)
+                    && isOperator(simplifiedChar)
                     && numStringBuilder.charAt(numStringBuilder.length() - 1) != SEPARATOR)
                 numStringBuilder.append(SEPARATOR);
         }
@@ -358,75 +356,75 @@ public abstract class Game {
         if (numStrings.length != 4)
             return false;
         int[] values = new int[4];
-        for (int i = 0; i < 4; i++){
-            values[i] = Integer.parseInt(numStrings[i]);
+        for (int value = 0; value < 4; value++){
+            values[value] = Integer.parseInt(numStrings[value]);
         }
         Arrays.sort(values);
         Arrays.sort(gamePane.question);
         return Arrays.equals(values, gamePane.question);
     }
-    private int initCalsArrayList(ArrayList<SubExpression> cals, char[] simplifiedChars){
+    private int initSubExpressionsArrayList(ArrayList<SubExpression> subExpressions, char[] simplifiedChars){
         StringBuilder numStringBuilder;
         //traverse through all operators to check the front and hind values and add to ArrayList cal
-        for (int i = 0; i < simplifiedChars.length; i ++){
-            if (isOperator(simplifiedChars[i])) {
+        for (int charIndex = 0; charIndex < simplifiedChars.length; charIndex++){
+            if (isOperator(simplifiedChars[charIndex])) {
                 SubExpression temp = new SubExpression();
                 boolean[] isolated = {false, false};
                 //parse left
                 numStringBuilder = new StringBuilder();
-                int j = i - 1;
-                if (j < 0)
-                    return (simplifiedChars[i] == '-')
+                int frontCharIndex = charIndex - 1;
+                if (frontCharIndex < 0)
+                    return (simplifiedChars[charIndex] == '-')
                             ? WRONG_CARD_VALUES
                             : WRONG_OPERATORS;
-                while (isPar(simplifiedChars[j])){
-                    if (--j < 0)
-                        return (simplifiedChars[i] == '-')
+                while (isPar(simplifiedChars[frontCharIndex])){
+                    if (--frontCharIndex < 0)
+                        return (simplifiedChars[charIndex] == '-')
                                 ? WRONG_CARD_VALUES
                                 : WRONG_OPERATORS;
                 }
-                while (isDigit(simplifiedChars[j])) {
-                    numStringBuilder.insert(0, simplifiedChars[j]);
-                    if (--j < 0)
+                while (isDigit(simplifiedChars[frontCharIndex])) {
+                    numStringBuilder.insert(0, simplifiedChars[frontCharIndex]);
+                    if (--frontCharIndex < 0)
                         break;
                 }
                 try {
                     if (!numStringBuilder.isEmpty())
                         temp.setNum1(Integer.parseInt(numStringBuilder.toString()));
-                    else if (isOperator(simplifiedChars[i])){
+                    else if (isOperator(simplifiedChars[charIndex])){
                         isolated[0] = true;
                     }
                 } catch (NumberFormatException e) {
                     return SYNTAX_ERROR;
                 }
                 //parse right
-                j = i + 1;
-                if (j > simplifiedChars.length - 1)
+                frontCharIndex = charIndex + 1;
+                if (frontCharIndex > simplifiedChars.length - 1)
                     return WRONG_OPERATORS;
                 numStringBuilder = new StringBuilder();
-                while (isPar(simplifiedChars[j])){
-                    if (++j >= simplifiedChars.length)
+                while (isPar(simplifiedChars[frontCharIndex])){
+                    if (++frontCharIndex >= simplifiedChars.length)
                         return WRONG_OPERATORS;
                 }
-                while (isDigit(simplifiedChars[j])) {
-                    numStringBuilder.append(simplifiedChars[j]);
-                    if (++j >= simplifiedChars.length)
+                while (isDigit(simplifiedChars[frontCharIndex])) {
+                    numStringBuilder.append(simplifiedChars[frontCharIndex]);
+                    if (++frontCharIndex >= simplifiedChars.length)
                         break;
                 }
                 try {
                     if (!numStringBuilder.isEmpty())
                         temp.setNum2(Integer.parseInt(numStringBuilder.toString()));
-                    else if (isOperator(simplifiedChars[i])){
+                    else if (isOperator(simplifiedChars[charIndex])){
                         isolated[1] = true;
                     }
                 } catch (NumberFormatException e) {
                     return SYNTAX_ERROR;
                 }
-                if (isolated[0] && simplifiedChars[i] == '-')
+                if (isolated[0] && simplifiedChars[charIndex] == '-')
                     return WRONG_CARD_VALUES;
                 else if (isolated[0])
                     return WRONG_OPERATORS;
-                temp.setOperator(operators[switch (simplifiedChars[i]){
+                temp.setOperator(operators[switch (simplifiedChars[charIndex]){
                     case '+' -> ADD;
                     case '-' -> SUBTRACT;
                     case '*' -> MULTIPLY;
@@ -436,33 +434,34 @@ public abstract class Game {
                         throw new RuntimeException("WrongOperator");
                     }
                 }]);
-                temp.setLevel((simplifiedChars[i] == '+' || simplifiedChars[i] == '-') ? 1 : 2);
-                temp.setOpIndex(i);
-                cals.add(temp);
+                temp.initLevel();
+                temp.setOpIndex(charIndex);
+                subExpressions.add(temp);
             }
         }
         return INIT_SUCCEED;
     }
     private void cancelRedundantPars(char[] simplifiedChars){
-        for (int i = 0; i < simplifiedChars.length; i ++){
-            int j;
-            if (simplifiedChars[i] == '('){
+        for (int charIndexLeft = 0; charIndexLeft < simplifiedChars.length; charIndexLeft++){
+            int charIndexRight;
+            if (simplifiedChars[charIndexLeft] == '('){
                 boolean toCancel = true;
-                for (j = i; j < simplifiedChars.length && simplifiedChars[j] != ')'; j++){
-                    if (isOperator(simplifiedChars[j]))
+                for (charIndexRight = charIndexLeft; charIndexRight < simplifiedChars.length && simplifiedChars[charIndexRight] != ')'; charIndexRight++){
+                    if (isOperator(simplifiedChars[charIndexRight]))
                         toCancel = false;
                 }
                 if (toCancel){
-                    simplifiedChars[i] = simplifiedChars[j] = '\0';
+                    simplifiedChars[charIndexLeft] = simplifiedChars[charIndexRight] = '\0';
                 }
             }
         }
     }
-    private boolean parsNotPairs(char[] set){
-        char[] setTest = new char[set.length + 2];
+    private boolean parsNotPairs(char[] parSet){
+        char[] setTest = new char[parSet.length + 2];
         setTest[0] = '\0';
-        System.arraycopy(set, 0, setTest, 1, set.length);
-        setTest[set.length+1] = '\0';
+        System.arraycopy(parSet, 0, setTest, 1, parSet.length);
+        // add '\0' to two ends to avoid out of bounds exception
+        setTest[parSet.length+1] = '\0';
         int rightIndex = 0;
         for (int i = 0; i < setTest.length; i++){
             if (setTest[i] != '('){
@@ -514,9 +513,9 @@ public abstract class Game {
         level += 10 * Math.max(leftCount, rightCount);
         return level;
     }
-    private void addInputParsLevel(ArrayList<SubExpression> cals, char[] simplifiedChars){
+    private void addInputParsLevel(ArrayList<SubExpression> subExpressions, char[] simplifiedChars){
         // traverse through operators and count pars in the left and right of it
-        for (SubExpression i : cals){
+        for (SubExpression i : subExpressions){
             int leftCount = 0, rightCount = 0;
             //parse left
             for(int j = i.getOpIndex() - 1; j >= 0; j --){
@@ -535,29 +534,29 @@ public abstract class Game {
             i.setLevel(i.getLevel() + 10 * Math.max(leftCount, rightCount));
         }
     }
-    private double calculateArrays(ArrayList<SubExpression> cal, double result){
-        while (!cal.isEmpty()){
+    private double calculateArrays(ArrayList<SubExpression> subExpressions, double result){
+        while (!subExpressions.isEmpty()){
             double maxLevel = 0;
-            for (SubExpression subExpression : cal) {
+            for (SubExpression subExpression : subExpressions) {
                 maxLevel = Math.max(subExpression.getLevel(), maxLevel);
             }
-            for (int i = 0; i < cal.size(); i++){
-                if (cal.get(i).getLevel() == maxLevel){
+            for (int i = 0; i < subExpressions.size(); i++){
+                if (subExpressions.get(i).getLevel() == maxLevel){
                     double formerLevel = 0; double latterLevel = 0;
-                    result = cal.get(i).operate();
-                    if (i + 1 < cal.size())
-                        latterLevel = cal.get(i+1).getLevel();
+                    result = subExpressions.get(i).operate();
+                    if (i + 1 < subExpressions.size())
+                        latterLevel = subExpressions.get(i+1).getLevel();
                     if (i - 1 >= 0){
-                        formerLevel = cal.get(i-1).getLevel();
+                        formerLevel = subExpressions.get(i-1).getLevel();
                     }
                     if (formerLevel > latterLevel){
-                        cal.get(i-1).setNum2(result);
+                        subExpressions.get(i-1).setNum2(result);
                     } else if (latterLevel > formerLevel){
-                        cal.get(i+1).setNum1(result);
+                        subExpressions.get(i+1).setNum1(result);
                     } else if (latterLevel > 0){
-                        cal.get(i-1).setNum2(result);
+                        subExpressions.get(i-1).setNum2(result);
                     }
-                    cal.remove(i);
+                    subExpressions.remove(i);
                     break;
                 }
             }
