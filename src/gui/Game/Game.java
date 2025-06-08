@@ -493,18 +493,18 @@ public abstract class Game {
         }
         return false;
     }
-    private int setSelectLevels(int i, char[] parSelected) {
+    private int setSelectLevels(int opIndex, char[] parSelected) {
         int level = 0;
         int leftCount = 0, rightCount = 0;
         //parse left
-        for (int j = 4 * i + 3; j >= 0; j --){
+        for (int j = 4 * opIndex + 3; j >= 0; j --){
             if (parSelected[j] == ')')
                 break;
             if (parSelected[j] == '(')
                 leftCount ++;
         }
         //parse right
-        for (int j = 4 * (i + 1); j < 16; j ++){
+        for (int j = 4 * (opIndex + 1); j < 16; j ++){
             if (parSelected[j] == '(')
                 break;
             if (parSelected[j] == ')')
