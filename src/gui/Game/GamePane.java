@@ -1,5 +1,6 @@
 package gui.Game;
 import gui.Cards.*;
+import gui.ExceptionDial;
 import gui.StartGameWindow;
 import gui.Symbols.*;
 import gui.Time;
@@ -285,6 +286,7 @@ public class GamePane extends JPanel {
                 try {
                     gameLogic.join(); // to avoid calling the question before it is generated
                 } catch (InterruptedException e) {
+                    new ExceptionDial("线程异常。").setVisible(true);
                     throw new RuntimeException(e);
                 }
             }

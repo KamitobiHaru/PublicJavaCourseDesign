@@ -1,6 +1,7 @@
 package gui.Game;
 import gui.Cards.CardFrame;
 import gui.Cards.Cards;
+import gui.ExceptionDial;
 import gui.GameResultDial;
 import gui.PlayerSystem.CurrentPlayer;
 import javax.swing.*;
@@ -415,7 +416,10 @@ public abstract class Game {
                     case '-' -> SUBTRACT;
                     case '*' -> MULTIPLY;
                     case '/' -> DIVIDE;
-                    default -> throw new RuntimeException("WrongOperator");
+                    default -> {
+                        new ExceptionDial("运算符推演错误。");
+                        throw new RuntimeException("WrongOperator");
+                    }
                 };
                 temp[3] = (simplifiedChars[i] == '+' || simplifiedChars[i] == '-') ? 1 : 2;
                 temp[4] = i;
@@ -480,7 +484,10 @@ public abstract class Game {
         switch ((int) cal.get(i)[2]){
             case 0, 1: level ++; break;
             case 2, 3: level += 2; break;
-            default: throw new RuntimeException("WrongOperator");
+            default: {
+                new ExceptionDial("运算符推演错误。").setVisible(true);
+                throw new RuntimeException("WrongOperator");
+            }
         }
         int leftCount = 0, rightCount = 0;
         //parse left

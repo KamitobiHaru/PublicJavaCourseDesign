@@ -1,4 +1,6 @@
 package gui.PlayerSystem;
+import gui.ExceptionDial;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -31,7 +33,7 @@ public class PlayersIO {
             } else
                 readFile();
         } catch (IOException e) {
-            exceptionDialog("文件路径异常");
+            new ExceptionDial("文件路径异常。").setVisible(true);
         }
     }
     public void setGuest(){
@@ -39,7 +41,7 @@ public class PlayersIO {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
             writer.write(GUEST_NAME + SEPARATOR + 0 + SEPARATOR + 0);
         } catch (IOException e) {
-            exceptionDialog("文件写入异常");
+            new ExceptionDial("文件写入异常。").setVisible(true);
         }
     }
     // return -1 for name already exist
@@ -65,7 +67,7 @@ public class PlayersIO {
                         + SEPARATOR + 0 + SEPARATOR + 0
             );
         } catch (IOException e) {
-            exceptionDialog("文件写入异常");
+            new ExceptionDial("文件写入异常。").setVisible(true);
         }
         return CREATE_SUCCEED;
     }
@@ -102,7 +104,7 @@ public class PlayersIO {
                     writer.write(i+"\n");
                 }
             } catch (IOException e) {
-                exceptionDialog("文件写入异常");
+                new ExceptionDial("文件写入异常。").setVisible(true);
             }
             return;
         }
@@ -120,7 +122,7 @@ public class PlayersIO {
                 writer.write(i+"\n");
             }
         } catch (IOException e) {
-            exceptionDialog("文件写入异常");
+            new ExceptionDial("文件写入异常。").setVisible(true);
         }
     }
     public int[] getPlayerHigh(String name){
@@ -143,7 +145,7 @@ public class PlayersIO {
             }
         }
         high[0] = HIGH_SCORE_NOT_FOUND; high[1] = HIGH_SCORE_NOT_FOUND;
-        exceptionDialog("最高分查找异常");
+        new ExceptionDial("最高分查找异常。").setVisible(true);
         return high;
     }
     public int[] getUniversalHigh(){
@@ -170,7 +172,7 @@ public class PlayersIO {
                 lines.add(line);
             }
         } catch (Exception e) {
-            exceptionDialog("文件读取异常");
+            new ExceptionDial("文件读取异常。").setVisible(true);
         }
         if (lines.isEmpty())
             resetFile();
@@ -226,20 +228,5 @@ public class PlayersIO {
         button.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER,0),"button");
         button.getActionMap().put("button",buttonA);
         button.addActionListener(buttonA);
-    }
-    public void exceptionDialog(String message){
-        var ex = new JDialog();
-        ex.setTitle("异常");
-        ex.setModal(true);
-        ex.setSize(300, 200);
-        ex.setAlwaysOnTop(true);
-        ex.setResizable(false);
-        ex.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        ex.setLocationRelativeTo(null);
-        var mess = new JLabel(message, SwingConstants.CENTER);
-        mess.setVerticalAlignment(SwingConstants.CENTER);
-        mess.setFont(new Font("微软雅黑", Font.PLAIN, 20));
-        ex.add(mess);
-        ex.setVisible(true);
     }
 }
