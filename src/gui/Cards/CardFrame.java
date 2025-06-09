@@ -8,8 +8,8 @@ public class CardFrame extends JLabel {
     private ImageIcon icon;
     public Cards.Card card;
     public CardFrame(){
-        ImageIcon a = new ImageIcon(Objects.requireNonNull(getClass().getResource("/gui/images/cardFrame.png")));
-        emptyIcon = new ImageIcon(a.getImage().getScaledInstance(111, 166, Image.SCALE_SMOOTH));
+        ImageIcon imageIcon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/gui/images/cardFrame.png")));
+        emptyIcon = new ImageIcon(imageIcon.getImage().getScaledInstance(111, 166, Image.SCALE_SMOOTH));
         icon = emptyIcon;
         setIcon(icon);
         card = null;
