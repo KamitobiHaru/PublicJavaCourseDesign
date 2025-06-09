@@ -1,7 +1,5 @@
 package gui.Game;
-
 import gui.ExceptionDial;
-
 public class Operator{
     char op; // for identification
     String opString; // for output
