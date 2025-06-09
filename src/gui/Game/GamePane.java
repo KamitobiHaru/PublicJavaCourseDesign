@@ -269,18 +269,18 @@ public class GamePane extends JPanel {
         Component[] components = getComponents();
         int otherZOrder = getComponentCount() - 1;
         cardFrameZOrder = 0;
-        for (Component i : components) {
-            if (i instanceof CardFrame) {
-                setComponentZOrder(i, cardFrameZOrder++);
+        for (Component component : components) {
+            if (component instanceof CardFrame) {
+                setComponentZOrder(component, cardFrameZOrder++);
             } else {
-                setComponentZOrder(i, otherZOrder--);
+                setComponentZOrder(component, otherZOrder--);
             }
         }
     }
     //generate the next question right after the last one is used
     public void newQuestion() {
         EventQueue.invokeLater(() -> { //invoke this after UI refreshes
-            String[] QA;
+            String[] questionAnswerStrings;
             inputField.setText("");
             if (gameLogic.isAlive()) {
                 try {
@@ -290,16 +290,16 @@ public class GamePane extends JPanel {
                     throw new RuntimeException(e);
                 }
             }
-            QA = gameLogic.getQuestionString().split(GameLogic.SEPARATOR);
+            questionAnswerStrings = gameLogic.getQuestionString().split(GameLogic.SEPARATOR);
             gameLogic = new GameLogic();
             gameLogic.start();
             question = new int[]{
-                    Integer.parseInt(QA[0]),
-                    Integer.parseInt(QA[1]),
-                    Integer.parseInt(QA[2]),
-                    Integer.parseInt(QA[3])
+                    Integer.parseInt(questionAnswerStrings[0]),
+                    Integer.parseInt(questionAnswerStrings[1]),
+                    Integer.parseInt(questionAnswerStrings[2]),
+                    Integer.parseInt(questionAnswerStrings[3])
             };
-            key = QA[4];
+            key = questionAnswerStrings[4];
             for (int i = 0; i < 4; i++) {
                 cardFrames[i].setFilled(cards.cardsSet[question[i] - 1]);
                 cardSelects[i].setEmpty();

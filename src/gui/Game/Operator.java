@@ -1,4 +1,7 @@
 package gui.Game;
+
+import gui.ExceptionDial;
+
 public class Operator{
     char op; // for identification
     String opString; // for output
@@ -7,6 +10,8 @@ public class Operator{
     public Operator(char op){
         this.op = op;
         opString = Character.toString(op);
+        // level: operate priority (+, - = 1; *, / = 2; () += 10 )
+        // method: +, * = 1 (does not change the operate behind); -, / = -1 (changes)
         switch (op) {
             case '+': level = 1; method = 1; break;
             case '-': level = 1; method = -1; break;
@@ -23,7 +28,10 @@ public class Operator{
             case '-' -> a - b;
             case '*' -> a * b;
             case '/' -> a / b;
-            default -> -128;
+            default -> {
+                new ExceptionDial("运算符推演错误。");
+                throw new RuntimeException("Wrong Operator");
+            }
         };
     }
 }
