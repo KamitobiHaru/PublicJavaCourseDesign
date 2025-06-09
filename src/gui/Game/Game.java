@@ -260,8 +260,8 @@ public abstract class Game {
         //check if card is empty
         if (gamePane.cardSelects[0].isEmpty() || gamePane.cardSelects[1].isEmpty() || gamePane.cardSelects[2].isEmpty())
             return result;
-        for (int i = 0; i < 3; i ++) {
-            if (gamePane.ops[i].getSelectedIndex() - 1 == -1)
+        for (int opPaneIndex = 0; opPaneIndex < 3; opPaneIndex++) {
+            if (gamePane.ops[opPaneIndex].getSelectedIndex() - 1 == -1)
                 return NO_OPERATOR;
         }
         // operators in JComboBoxes are indexed as 1, 2, 3, 4,
@@ -284,11 +284,11 @@ public abstract class Game {
         ));
         // check brackets selected
         char[] parSelected = new char[16];
-        for (int i = 0; i < 4; i++) {
-            parSelected[4*i] = (gamePane.leftPars[i].getSelected()[0])?'(':'\0';
-            parSelected[4*i+1] = (gamePane.leftPars[i].getSelected()[1])?'(':'\0';
-            parSelected[4*i+2] = (gamePane.rightPars[i].getSelected()[0])?')':'\0';
-            parSelected[4*i+3] = (gamePane.rightPars[i].getSelected()[1])?')':'\0';
+        for (int parPaneIndex = 0; parPaneIndex < 4; parPaneIndex++) {
+            parSelected[4* parPaneIndex] = (gamePane.leftPars[parPaneIndex].getSelected()[0])?'(':'\0';
+            parSelected[4* parPaneIndex +1] = (gamePane.leftPars[parPaneIndex].getSelected()[1])?'(':'\0';
+            parSelected[4* parPaneIndex +2] = (gamePane.rightPars[parPaneIndex].getSelected()[0])?')':'\0';
+            parSelected[4* parPaneIndex +3] = (gamePane.rightPars[parPaneIndex].getSelected()[1])?')':'\0';
         }
         //Check if pars are in pairs
         if (parsNotPairs(parSelected))
@@ -457,33 +457,33 @@ public abstract class Game {
         }
     }
     private boolean parsNotPairs(char[] parSet){
-        char[] setTest = new char[parSet.length + 2];
-        setTest[0] = '\0';
-        System.arraycopy(parSet, 0, setTest, 1, parSet.length);
+        char[] setToTest = new char[parSet.length + 2];
+        setToTest[0] = '\0';
+        System.arraycopy(parSet, 0, setToTest, 1, parSet.length);
         // add '\0' to two ends to avoid out of bounds exception
-        setTest[parSet.length+1] = '\0';
-        int rightIndex = 0;
-        for (int i = 0; i < setTest.length; i++){
-            if (setTest[i] != '('){
+        setToTest[parSet.length+1] = '\0';
+        int startRightIndex = 0;
+        for (int currentLeftIndex = 0; currentLeftIndex < setToTest.length; currentLeftIndex++){
+            if (setToTest[currentLeftIndex] != '('){
                 continue;
             }
-            for (int j = Math.max(rightIndex, i); j < setTest.length; j ++){
-                if (setTest[j] == ')'){
-                    rightIndex = j + 1;
+            for (int j = Math.max(startRightIndex, currentLeftIndex); j < setToTest.length; j ++){
+                if (setToTest[j] == ')'){
+                    startRightIndex = j + 1;
                     break;
                 }
-                if (j == setTest.length - 1){
+                if (j == setToTest.length - 1){
                     return true;
                 }
             }
         }
-        int leftIndex = setTest.length - 1;
-        for (int i = setTest.length - 1; i >= 0; i --){
-            if (setTest[i] != ')')
+        int startLeftIndex = setToTest.length - 1;
+        for (int currentRightIndex = setToTest.length - 1; currentRightIndex >= 0; currentRightIndex--){
+            if (setToTest[currentRightIndex] != ')')
                 continue;
-            for (int j = Math.min(leftIndex, i); j >= 0; j --){
-                if (setTest[j] == '('){
-                    leftIndex = j - 1;
+            for (int j = Math.min(startLeftIndex, currentRightIndex); j >= 0; j --){
+                if (setToTest[j] == '('){
+                    startLeftIndex = j - 1;
                     break;
                 }
                 if (j == 0){
@@ -497,17 +497,17 @@ public abstract class Game {
         int level = 0;
         int leftCount = 0, rightCount = 0;
         //parse left
-        for (int j = 4 * opIndex + 3; j >= 0; j --){
-            if (parSelected[j] == ')')
+        for (int testParIndex = 4 * opIndex + 3; testParIndex >= 0; testParIndex--){
+            if (parSelected[testParIndex] == ')')
                 break;
-            if (parSelected[j] == '(')
+            if (parSelected[testParIndex] == '(')
                 leftCount ++;
         }
         //parse right
-        for (int j = 4 * (opIndex + 1); j < 16; j ++){
-            if (parSelected[j] == '(')
+        for (int testParIndex = 4 * (opIndex + 1); testParIndex < 16; testParIndex++){
+            if (parSelected[testParIndex] == '(')
                 break;
-            if (parSelected[j] == ')')
+            if (parSelected[testParIndex] == ')')
                 rightCount ++;
         }
         level += 10 * Math.max(leftCount, rightCount);
@@ -515,23 +515,23 @@ public abstract class Game {
     }
     private void addInputParsLevel(ArrayList<SubExpression> subExpressions, char[] simplifiedChars){
         // traverse through operators and count pars in the left and right of it
-        for (SubExpression i : subExpressions){
+        for (SubExpression subExpression : subExpressions){
             int leftCount = 0, rightCount = 0;
             //parse left
-            for(int j = i.getOpIndex() - 1; j >= 0; j --){
-                if (simplifiedChars[j] == ')')
+            for(int parIndex = subExpression.getOpIndex() - 1; parIndex >= 0; parIndex--){
+                if (simplifiedChars[parIndex] == ')')
                     break;
-                if (simplifiedChars[j] == '(')
+                if (simplifiedChars[parIndex] == '(')
                     leftCount ++;
             }
             //parse right
-            for (int j = i.getOpIndex() + 1; j < simplifiedChars.length; j ++){
-                if (simplifiedChars[j] == '(')
+            for (int parIndex = subExpression.getOpIndex() + 1; parIndex < simplifiedChars.length; parIndex++){
+                if (simplifiedChars[parIndex] == '(')
                     break;
-                if (simplifiedChars[j] == ')')
+                if (simplifiedChars[parIndex] == ')')
                     rightCount ++;
             }
-            i.setLevel(i.getLevel() + 10 * Math.max(leftCount, rightCount));
+            subExpression.setLevel(subExpression.getLevel() + 10 * Math.max(leftCount, rightCount));
         }
     }
     private double calculateArrays(ArrayList<SubExpression> subExpressions, double result){
@@ -540,23 +540,23 @@ public abstract class Game {
             for (SubExpression subExpression : subExpressions) {
                 maxLevel = Math.max(subExpression.getLevel(), maxLevel);
             }
-            for (int i = 0; i < subExpressions.size(); i++){
-                if (subExpressions.get(i).getLevel() == maxLevel){
+            for (int subExpressionIndex = 0; subExpressionIndex < subExpressions.size(); subExpressionIndex++){
+                if (subExpressions.get(subExpressionIndex).getLevel() == maxLevel){
                     double formerLevel = 0; double latterLevel = 0;
-                    result = subExpressions.get(i).operate();
-                    if (i + 1 < subExpressions.size())
-                        latterLevel = subExpressions.get(i+1).getLevel();
-                    if (i - 1 >= 0){
-                        formerLevel = subExpressions.get(i-1).getLevel();
+                    result = subExpressions.get(subExpressionIndex).operate();
+                    if (subExpressionIndex + 1 < subExpressions.size())
+                        latterLevel = subExpressions.get(subExpressionIndex +1).getLevel();
+                    if (subExpressionIndex - 1 >= 0){
+                        formerLevel = subExpressions.get(subExpressionIndex -1).getLevel();
                     }
                     if (formerLevel > latterLevel){
-                        subExpressions.get(i-1).setNum2(result);
+                        subExpressions.get(subExpressionIndex -1).setNum2(result);
                     } else if (latterLevel > formerLevel){
-                        subExpressions.get(i+1).setNum1(result);
+                        subExpressions.get(subExpressionIndex +1).setNum1(result);
                     } else if (latterLevel > 0){
-                        subExpressions.get(i-1).setNum2(result);
+                        subExpressions.get(subExpressionIndex -1).setNum2(result);
                     }
-                    subExpressions.remove(i);
+                    subExpressions.remove(subExpressionIndex);
                     break;
                 }
             }
