@@ -280,7 +280,6 @@ public class GamePane extends JPanel {
     //generate the next question right after the last one is used
     public void newQuestion() {
         EventQueue.invokeLater(() -> { //invoke this after UI refreshes
-            String[] questionAnswerStrings;
             inputField.setText("");
             if (gameLogic.isAlive()) {
                 try {
@@ -290,7 +289,7 @@ public class GamePane extends JPanel {
                     throw new RuntimeException(e);
                 }
             }
-            questionAnswerStrings = gameLogic.getQuestionString().split(GameLogic.SEPARATOR);
+            String[] questionAnswerStrings = gameLogic.getQuestionString().split(GameLogic.SEPARATOR);
             gameLogic = new GameLogic();
             gameLogic.start();
             question = new int[]{
