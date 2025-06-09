@@ -258,7 +258,10 @@ public abstract class Game {
     private double checkSelectResult(){
         double result = NO_VALUE;
         //check if card is empty
-        if (gamePane.cardSelects[0].isEmpty() || gamePane.cardSelects[1].isEmpty() || gamePane.cardSelects[2].isEmpty())
+        if (gamePane.cardSelects[0].isEmpty()
+                || gamePane.cardSelects[1].isEmpty()
+                || gamePane.cardSelects[2].isEmpty()
+                || gamePane.cardSelects[3].isEmpty())
             return result;
         for (int opPaneIndex = 0; opPaneIndex < 3; opPaneIndex++) {
             if (gamePane.ops[opPaneIndex].getSelectedIndex() - 1 == -1)
