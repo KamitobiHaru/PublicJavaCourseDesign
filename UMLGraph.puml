@@ -74,7 +74,25 @@ package "PlayerSystem" {
     PlayerInfo ..> CurrentPlayer
 
 }
-
+    package "StartGame"{
+    class StartGameWindow extends javax.Swing.JFrame {
+            -player: CurrentPlayer
+            -statusBarLabel: SelectModePane
+            -windowMenuBar: WindowMenuBar
+            -game: Game
+            -gamePane: GamePane
+            +StartGameWindow()
+            +finishGame(goOn: boolean): void
+        }
+    class SelectModePane extends javax.Swing.JPanel{
+        +SelectModePane()
+    }
+    class WindowMenuBar extends javax.Swing.JMenuBar{
+        +WindowMenuBar()
+    }
+    StartGameWindow --o SelectModePane
+    StartGameWindow --o WindowMenuBar
+}
     package "Cards" {
         class Cards {
             +cardsSet: Card[]
@@ -98,8 +116,8 @@ package "PlayerSystem" {
             +setEmpty(): void
             +isEmpty(): boolean
         }
-        CardFrame -- Cards
-        Cards *-- Card
+        CardFrame --o Cards
+        Cards --* Card
     }
 
     package "Game"{
@@ -115,8 +133,6 @@ package "PlayerSystem" {
                 +solution(values: int[]): String
                 }
         }
-
-
             abstract class Game {
                 #gamePane: GamePane
                 #player: CurrentPlayer
@@ -189,14 +205,7 @@ package "PlayerSystem" {
         +Welcome()
     }
 
-    class StartGameWindow extends javax.Swing.JFrame {
-        -player: CurrentPlayer
-        -statusBarLabel: JLabel
-        -game: Game
-        -gamePane: GamePane
-        +StartGameWindow()
-        +finishGame(goOn: boolean): void
-    }
+
 
     class GameResultDial extends javax.Swing.JDialog
     class GameInfo extends javax.Swing.JDialog{
@@ -235,8 +244,8 @@ package "PlayerSystem" {
 
 }
 
-' 聚合
-GameLogic o-- Calculate
+
+GameLogic --* Calculate
 
 
 
