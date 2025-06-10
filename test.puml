@@ -39,8 +39,35 @@ package "PlayerSystem" {
         +setPlayerHigh(name: String, score: int, mode: int): void
         +getUniversalHigh(): int[]
     }
-    class LogInDial extends javax.Swing.JDialog
-    class NewPlayerDial extends javax.Swing.JDialog
+    class LogInDial extends javax.Swing.JDialog{
+        -name: String
+        -password: char[]
+        -nameLabel: JLabel
+        -passwordLabel: JLabel
+        -localInfo: JLabel
+        -incorrectInfo: JLabel
+        -confirmButton: JButton
+        -guestButton: JButton
+        -newPlayer: JButton
+        -nameTextField: JPasswordField
+        -playerSet: boolean
+        +LogInDial(owner: JFrame, player CurrentPlayer)
+        -setComponents(): void
+        -setActions(player: CurrentPlayer): void
+        -setLayout(): void
+        +isPlayerSet(): boolean
+    }
+
+    class NewPlayerDial extends javax.Swing.JDialog{
+        -name: String
+        -nameLabel: JLabel
+        -passwordLabel: JLabel
+        -confirmLabel: JLabel
+        -errorInfo: JLabel
+        -confirmButton: JButton
+        -cancelButton: JButton
+        -nameTextField: JPasswordField
+}
     class PlayerInfo extends javax.Swing.JDialog
     LogInDial --> PlayersIO
     CurrentPlayer ..> LogInDial
