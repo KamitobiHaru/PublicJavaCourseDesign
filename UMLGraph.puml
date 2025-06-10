@@ -1,5 +1,8 @@
 @startuml
 skinparam linetype ortho
+skinparam classFontSize 20
+skinparam nodesep 30
+skinparam ranksep 30
 
 class Application {
     +main(args: String[]): void
@@ -90,8 +93,8 @@ package "PlayerSystem" {
     class WindowMenuBar extends javax.Swing.JMenuBar{
         +WindowMenuBar()
     }
-    StartGameWindow --o SelectModePane
-    StartGameWindow --o WindowMenuBar
+    StartGameWindow -down-o SelectModePane
+    StartGameWindow -down-o WindowMenuBar
 }
     package "Cards" {
         class Cards {
@@ -116,18 +119,19 @@ package "PlayerSystem" {
             +setEmpty(): void
             +isEmpty(): boolean
         }
-        CardFrame --o Cards
-        Cards --* Card
+        CardFrame -up-o Cards
+        Cards -up-* Card
     }
 
     package "Game"{
         package "Game Logic" {
-            class GameLogic extends java.lang.Thread {
+            class GameLogic{
                             +SEPARATOR: String
                             -questionString: String
                             +run(): void
                             +getQuestionString(): String
                         }
+            GameLogic --|> java.lang.Thread
             class Calculate {
                 -ops: Operator[]
                 +solution(values: int[]): String
@@ -190,7 +194,7 @@ package "PlayerSystem" {
 
 
 
-    GUI.Game.Game --> GUI.GameResultDial
+    GUI.Game.Game -down-> GUI.GameResultDial
     GUI.Game.Game --> GamePane
     GUI.Game.Game --> CurrentPlayer
     GUI.Game.Game --> PlayersIO
@@ -214,7 +218,7 @@ package "PlayerSystem" {
     class Help extends javax.Swing.JDialog{
         +Help()
     }
-    StartGameWindow --> GUI.Help
+    StartGameWindow -up-> GUI.Help
     class ExceptionDial extends javax.Swing.JDialog{
         +ExceptionDial(message: String)
     }
@@ -260,9 +264,9 @@ StartGameWindow --> PlayersIO
 StartGameWindow ..> LogInDial
 
 GamePane --> Time
-GamePane --> CardFrame
-GamePane --> Operators
-GamePane --> Pars
+GamePane -right-> CardFrame
+GamePane -up-> Operators
+GamePane -down-> Pars
 GamePane --> GameLogic
 Time --> GUI.Game.Game
 GUI.Game.Game --> CurrentPlayer
