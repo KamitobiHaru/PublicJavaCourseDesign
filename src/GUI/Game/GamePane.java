@@ -1,7 +1,7 @@
 package GUI.Game;
 import GUI.Cards.*;
 import GUI.ExceptionDial;
-import GUI.StartGameWindow;
+import GUI.StartGame.StartGameWindow;
 import GUI.Symbols.*;
 import GUI.Time;
 import java.awt.*;

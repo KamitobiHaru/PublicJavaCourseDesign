@@ -1,10 +1,4 @@
 @startuml
-skinparam classAttributeIconSize 0
-skinparam classFontSize 12
-skinparam classAttributeFontSize 11
-skinparam classMethodFontSize 11
-skinparam nodesep 50
-skinparam ranksep 50
 skinparam linetype ortho
 
 class Application {
@@ -70,11 +64,14 @@ package "PlayerSystem" {
         +NewPlayerDial(owner: JDialog)
         -setError(message: String): void
 }
-    class PlayerInfo extends javax.Swing.JDialog
+    class PlayerInfo extends javax.Swing.JDialog{
+    +PlayerInfo(owner: JFrame, player: CurrentPlayer)
+    }
     LogInDial --> PlayersIO
     CurrentPlayer ..> LogInDial
     LogInDial --> NewPlayerDial
     NewPlayerDial --> PlayersIO
+    PlayerInfo ..> CurrentPlayer
 
 }
 
@@ -202,11 +199,18 @@ package "PlayerSystem" {
     }
 
     class GameResultDial extends javax.Swing.JDialog
-    class GameInfo extends javax.Swing.JDialog
-    class Help extends javax.Swing.JDialog
+    class GameInfo extends javax.Swing.JDialog{
+        +GameInfo()
+    }
+    class Help extends javax.Swing.JDialog{
+        +Help()
+    }
     StartGameWindow --> GUI.Help
-    class ExceptionDial extends javax.Swing.JDialog
+    class ExceptionDial extends javax.Swing.JDialog{
+        +ExceptionDial(message: String)
+    }
     class Time extends javax.Swing.JLabel {
+        +timer: javax.Swing.Timer
         -mode: int
         -currentMin: int
         -currentSec: int

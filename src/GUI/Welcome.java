@@ -1,4 +1,6 @@
 package GUI;
+import GUI.StartGame.StartGameWindow;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Image;
