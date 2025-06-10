@@ -1,0 +1,225 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam classFontSize 12
+skinparam classAttributeFontSize 11
+skinparam classMethodFontSize 11
+skinparam nodesep 80
+skinparam ranksep 100
+skinparam linetype ortho
+
+class Application {
+    +main(args: String[]): void
+}
+
+package "javax.Swing"{
+class JLabel
+class JFrame
+class JDialog
+class JPanel
+class JComboBox
+}
+
+
+package "gui" {
+package "PlayerSystem" {
+    class CurrentPlayer {
+        -name: String
+        -highScore: int[]
+        +setName(name: String): void
+        +getName(): String
+        +setHighScoreArray(scores: int[]): void
+        +getHighScoreArray(): int[]
+    }
+    class PlayersIO {
+        -file: File
+        -lines: ArrayList<String>
+        +newPlayer(name: String, password: char[]): int
+        +checkPlayerPass(name: String, password: char[]): boolean
+        +getPlayerHigh(name: String): int[]
+        +setPlayerHigh(name: String, score: int, mode: int): void
+        +getUniversalHigh(): int[]
+    }
+    class LogInDial extends javax.Swing.JDialog
+    class NewPlayerDial extends javax.Swing.JDialog
+    class PlayerInfo extends javax.Swing.JDialog
+    LogInDial --> PlayersIO
+    CurrentPlayer ..> LogInDial
+    LogInDial --> NewPlayerDial
+    NewPlayerDial --> PlayersIO
+
+}
+
+    package "Cards" {
+        class Cards {
+            +cardsSet: Card[]
+            +Cards()
+        }
+
+        class Card {
+            -icon: ImageIcon
+            -value: int
+            +Card(iFilename: URL, value: int)
+            +getValue(): int
+            +getIcon(): ImageIcon
+        }
+
+        class CardFrame extends javax.Swing.JLabel {
+            -emptyIcon: ImageIcon
+            -icon: ImageIcon
+            +card: Card
+            +CardFrame()
+            +setFilled(card: Card): void
+            +setEmpty(): void
+            +isEmpty(): boolean
+        }
+        CardFrame -- Cards
+        Cards *-- Card
+    }
+
+    package "Game"{
+        package "Game Logic" {
+            class GameLogic extends Thread {
+                            +SEPARATOR: String
+                            -questionString: String
+                            +run(): void
+                            +getQuestionString(): String
+                        }
+            class Calculate {
+                -ops: Operator[]
+                +solution(values: int[]): String
+                }
+        }
+
+
+            abstract class Game {
+                #gamePane: GamePane
+                #player: CurrentPlayer
+                #mode: int
+                #score: int
+                #result: GameResultDial
+                -dragging: boolean
+                -cardSelected: Card
+                -cardDragged: CardFrame
+                -dragOffset: Point
+                -questionCompleted: int
+                -operators: Operator[]
+                +endGame(source: int): void
+                +calculateScore(): void
+            }
+
+            class TimedGame extends Game {
+                +TimedGame(gamePane: GamePane, player: CurrentPlayer)
+                +endGame(source: int): void
+            }
+
+            class InfiniteGame extends Game {
+                +InfiniteGame(gamePane: GamePane, player: CurrentPlayer)
+                +endGame(source: int): void
+            }
+
+            class GamePane extends javax.Swing.JPanel {
+                +gameTimer: Time
+                -cardFrames: CardFrame[]
+                -inputField: JTextField
+                +GamePane(owner: StartGameWindow)
+                +newQuestion(): void
+            }
+
+            class SubExpression {
+                -num1: double
+                -num2: double
+                -operator: Operator
+                -level: int
+                -opIndex: int
+                +SubExpression()
+                +SubExpression(num1: double, num2: double, operator: Operator)
+                +setNum1(num1: double): void
+                +setNum2(num2: double): void
+                +setOperator(operator: Operator): void
+                +operate(): double
+                +initLevel(): void
+                +setLevel(level: int): void
+                +getLevel(): int
+                +setOpIndex(index: int): void
+                +getOpIndex(): int
+            }
+
+
+
+    gui.Game.Game --> gui.GameResultDial
+    gui.Game.Game --> GamePane
+    gui.Game.Game --> CurrentPlayer
+    gui.Game.Game --> PlayersIO
+    gui.Game.Game --> gui.Symbols.Operators
+    gui.Game.Game --> gui.Game.SubExpression
+    }
+
+    class Welcome extends javax.Swing.JFrame {
+        -continueButton: JButton
+        -words: JLabel
+        -imageIcon: ImageIcon
+        +Welcome()
+    }
+
+    class StartGameWindow extends javax.Swing.JFrame {
+        -player: CurrentPlayer
+        -statusBarLabel: JLabel
+        -game: Game
+        -gamePane: GamePane
+        +StartGameWindow()
+        +finishGame(goOn: boolean): void
+    }
+
+    class GameResultDial extends javax.Swing.JDialog
+    class GameInfo extends javax.Swing.JDialog
+    class Help extends javax.Swing.JDialog
+    class ExceptionDial extends javax.Swing.JDialog
+    class Time extends javax.Swing.JLabel {
+        -mode: int
+        -currentMin: int
+        -currentSec: int
+        -game: Game
+        +setMode(game: Game, mode: int, timeMin: int, timeSec: int): void
+        +run(): void
+        +getSecondPast(): int
+    }
+    package "Symbols"{
+        class Operators extends javax.Swing.JComboBox {
+                +Operators()
+                +setEmpty(): void
+            }
+        class Pars extends javax.Swing.JPanel {
+                +parButtons: JToggleButton[]
+                -{final} side: int
+                +Pars(side: int)
+                +getSelected(): boolean[]
+                +setEmpty(): void
+            }
+    }
+
+}
+
+' 聚合
+GameLogic o-- Calculate
+
+
+
+
+' 引用关系
+Application --> Welcome
+Welcome --> StartGameWindow
+StartGameWindow --> gui.Game.Game
+StartGameWindow --> GamePane
+StartGameWindow --> CurrentPlayer
+StartGameWindow --> PlayersIO
+
+GamePane --> Time
+GamePane --> CardFrame
+GamePane --> Operators
+GamePane --> Pars
+GamePane --> GameLogic
+Time --> gui.Game.Game
+gui.Game.Game --> CurrentPlayer
+
+
+@enduml
