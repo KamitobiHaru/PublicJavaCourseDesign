@@ -1,4 +1,4 @@
-package gui.Game;
+package GUI.Game;
 class Calculate{
     Operator[] ops = {
         new Operator('+'), 

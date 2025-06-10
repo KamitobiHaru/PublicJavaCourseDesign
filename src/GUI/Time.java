@@ -1,5 +1,5 @@
-package gui;
-import gui.Game.Game;
+package GUI;
+import GUI.Game.Game;
 import java.awt.*;
 import java.util.Objects;
 import javax.swing.*;
@@ -17,7 +17,7 @@ public class Time extends JLabel{
         setOpaque(true);
         // set timer icon
         setHorizontalAlignment(SwingConstants.CENTER);
-        Image image = new ImageIcon(Objects.requireNonNull(getClass().getResource("/gui/images/stopWatch.png")))
+        Image image = new ImageIcon(Objects.requireNonNull(getClass().getResource("/GUI/images/stopWatch.png")))
             .getImage()
             .getScaledInstance(30, 30, Image.SCALE_SMOOTH);
         setIcon(new ImageIcon(image));

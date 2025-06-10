@@ -1,4 +1,4 @@
-package gui.Cards;
+package GUI.Cards;
 import javax.swing.*;
 import java.net.URL;
 public class Cards {
@@ -7,7 +7,7 @@ public class Cards {
     public Cards(){
         cardsSet = new Card[13];
         for (int i = 0; i < 13; i++) {
-            cardsSet[i] = new Card(getClass().getResource("/gui/images/Cards/" + (i + 1) + ".png"), i + 1);
+            cardsSet[i] = new Card(getClass().getResource("/GUI/images/Cards/" + (i + 1) + ".png"), i + 1);
         }
     }
     public static class Card{ // public or private: public

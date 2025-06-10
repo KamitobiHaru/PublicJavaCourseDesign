@@ -1,9 +1,9 @@
-package gui;
-import gui.Game.*;
-import gui.PlayerSystem.CurrentPlayer;
-import gui.PlayerSystem.LogInDial;
-import gui.PlayerSystem.PlayerInfo;
-import gui.PlayerSystem.PlayersIO;
+package GUI;
+import GUI.Game.*;
+import GUI.PlayerSystem.CurrentPlayer;
+import GUI.PlayerSystem.LogInDial;
+import GUI.PlayerSystem.PlayerInfo;
+import GUI.PlayerSystem.PlayersIO;
 import java.awt.*;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;

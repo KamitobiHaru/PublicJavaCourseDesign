@@ -1,9 +1,9 @@
-package gui.Game;
-import gui.Cards.CardFrame;
-import gui.Cards.Cards;
-import gui.ExceptionDial;
-import gui.GameResultDial;
-import gui.PlayerSystem.CurrentPlayer;
+package GUI.Game;
+import GUI.Cards.CardFrame;
+import GUI.Cards.Cards;
+import GUI.ExceptionDial;
+import GUI.GameResultDial;
+import GUI.PlayerSystem.CurrentPlayer;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;

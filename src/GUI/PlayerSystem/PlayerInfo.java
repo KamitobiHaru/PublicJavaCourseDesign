@@ -1,24 +1,24 @@
-package gui;
-import java.awt.Font;
+package GUI.PlayerSystem;
 import javax.swing.*;
-public class GameInfo extends JDialog {
-    private JLabel icon, name, author, description;
-    public GameInfo(JFrame owner){
-        super(owner, "关于", true);
-        initUI();
-        setLayout();
+import java.awt.*;
+public class PlayerInfo extends JDialog{
+    public PlayerInfo(JFrame owner, CurrentPlayer player){
+        super(owner, "当前玩家信息", false);
+        initUI(owner, player);
     }
-    private void initUI(){
-        setSize(400,300);
+    private void initUI(JFrame owner, CurrentPlayer player){
+        setSize(300,200);
         setResizable(false);
+        setLocationRelativeTo(owner);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        setLocationRelativeTo(null);
-        name = new JLabel("24点");
+        Font font = new Font("微软雅黑", Font.PLAIN, 22);
+        JLabel name, iHighScore, tHighScore;
+        name = new JLabel("用户名：" + player.getName());
         name.setFont(new Font("微软雅黑", Font.BOLD, 20));
-        author = new JLabel("By 张思远，程亚迪");
-        description = new JLabel("Java课程设计    ver 0.8.4-alpha");
-    }
-    private void setLayout(){
+        iHighScore = new JLabel("无限模式最高得分：" + player.getHighScoreArray()[0], SwingConstants.CENTER);
+        iHighScore.setFont(font);
+        tHighScore = new JLabel("计时模式最高得分：" + player.getHighScoreArray()[1], SwingConstants.CENTER);
+        tHighScore.setFont(font);
         var gl = new GroupLayout(getContentPane());
         getContentPane().setLayout(gl);
         gl.setAutoCreateContainerGaps(true);
@@ -29,8 +29,8 @@ public class GameInfo extends JDialog {
                         .addGroup(
                                 gl.createParallelGroup(GroupLayout.Alignment.CENTER,false)
                                         .addComponent(name)
-                                        .addComponent(author)
-                                        .addComponent(description)
+                                        .addComponent(iHighScore)
+                                        .addComponent(tHighScore)
                         )
                         .addGap(0,0,Integer.MAX_VALUE)
         );
@@ -39,9 +39,9 @@ public class GameInfo extends JDialog {
                         .addGap(0,0,Integer.MAX_VALUE)
                         .addComponent(name)
                         .addGap(0,0,Integer.MAX_VALUE)
-                        .addComponent(author)
+                        .addComponent(iHighScore)
                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(description)
+                        .addComponent(tHighScore)
                         .addGap(0,0,Integer.MAX_VALUE)
         );
     }

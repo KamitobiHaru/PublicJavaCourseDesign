@@ -1,4 +1,4 @@
-package gui.Game;
+package GUI.Game;
 public class SubExpression {
     private double num1, num2;
     private Operator operator;

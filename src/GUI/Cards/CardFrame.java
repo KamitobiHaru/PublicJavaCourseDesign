@@ -1,4 +1,4 @@
-package gui.Cards;
+package GUI.Cards;
 import java.awt.Image;
 import java.awt.event.*;
 import java.util.Objects;
@@ -8,7 +8,7 @@ public class CardFrame extends JLabel {
     private ImageIcon icon;
     public Cards.Card card;
     public CardFrame(){
-        ImageIcon imageIcon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/gui/images/cardFrame.png")));
+        ImageIcon imageIcon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/GUI/images/cardFrame.png")));
         emptyIcon = new ImageIcon(imageIcon.getImage().getScaledInstance(111, 166, Image.SCALE_SMOOTH));
         icon = emptyIcon;
         setIcon(icon);

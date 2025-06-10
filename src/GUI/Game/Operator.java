@@ -1,5 +1,5 @@
-package gui.Game;
-import gui.ExceptionDial;
+package GUI.Game;
+import GUI.ExceptionDial;
 public class Operator{
     char op; // for identification
     String opString; // for output

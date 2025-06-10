@@ -1,7 +1,7 @@
-package gui.Game;
-import gui.GameResultDial;
-import gui.PlayerSystem.CurrentPlayer;
-import gui.PlayerSystem.PlayersIO;
+package GUI.Game;
+import GUI.GameResultDial;
+import GUI.PlayerSystem.CurrentPlayer;
+import GUI.PlayerSystem.PlayersIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;

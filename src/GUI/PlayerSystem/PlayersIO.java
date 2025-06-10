@@ -1,5 +1,5 @@
-package gui.PlayerSystem;
-import gui.ExceptionDial;
+package GUI.PlayerSystem;
+import GUI.ExceptionDial;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;

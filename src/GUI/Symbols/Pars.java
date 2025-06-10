@@ -1,4 +1,4 @@
-package gui.Symbols;
+package GUI.Symbols;
 import java.awt.*;
 import javax.swing.*;
 public class Pars extends JPanel{

@@ -1,4 +1,4 @@
-package gui;
+package GUI;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Image;
@@ -33,7 +33,7 @@ public class Welcome extends JFrame{
     private void setWelcomeWord(){
         words = new JLabel();
         imageIcon = new ImageIcon(
-                Objects.requireNonNull(getClass().getResource("/gui/images/TitleImage.png"))
+                Objects.requireNonNull(getClass().getResource("/GUI/images/TitleImage.png"))
         );
         Image titleImage = imageIcon.getImage().getScaledInstance(521, 300, Image.SCALE_SMOOTH);
         ImageIcon imageIcon = new ImageIcon(titleImage);

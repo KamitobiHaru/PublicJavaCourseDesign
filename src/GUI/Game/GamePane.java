@@ -1,9 +1,9 @@
-package gui.Game;
-import gui.Cards.*;
-import gui.ExceptionDial;
-import gui.StartGameWindow;
-import gui.Symbols.*;
-import gui.Time;
+package GUI.Game;
+import GUI.Cards.*;
+import GUI.ExceptionDial;
+import GUI.StartGameWindow;
+import GUI.Symbols.*;
+import GUI.Time;
 import java.awt.*;
 import java.util.Objects;
 import javax.swing.*;
@@ -39,7 +39,7 @@ public class GamePane extends JPanel {
         cardFrames = new CardFrame[4];
         cardSelects = new CardFrame[4];
         cardStack = new JLabel(); // icon...
-        ImageIcon a = new ImageIcon(Objects.requireNonNull(getClass().getResource("/gui/images/cardFrame.png")));
+        ImageIcon a = new ImageIcon(Objects.requireNonNull(getClass().getResource("/GUI/images/cardFrame.png")));
         ImageIcon emptyIcon = new ImageIcon(
                 a.getImage().getScaledInstance(40, 60, Image.SCALE_SMOOTH)
         );

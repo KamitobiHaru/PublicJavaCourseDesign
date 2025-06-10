@@ -1,7 +1,7 @@
-package gui.Game;
-import gui.GameResultDial;
-import gui.PlayerSystem.CurrentPlayer;
-import gui.PlayerSystem.PlayersIO;
+package GUI.Game;
+import GUI.GameResultDial;
+import GUI.PlayerSystem.CurrentPlayer;
+import GUI.PlayerSystem.PlayersIO;
 public class InfiniteGame extends Game {
     private final static PlayersIO PLAYERS_IO = new PlayersIO();
     public InfiniteGame(GamePane gamePane, CurrentPlayer player){

@@ -1,4 +1,4 @@
-import gui.*;
+import GUI.*;
 import java.awt.*;
 public class Application {
     public static void main(String[] args){

@@ -1,4 +1,4 @@
-package gui.PlayerSystem;
+package GUI.PlayerSystem;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;

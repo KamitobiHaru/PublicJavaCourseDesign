@@ -1,4 +1,4 @@
-package gui.Symbols;
+package GUI.Symbols;
 import java.awt.Color;
 import java.awt.Font;
 import javax.swing.JComboBox;

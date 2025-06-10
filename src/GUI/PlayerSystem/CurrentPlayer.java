@@ -1,4 +1,4 @@
-package gui.PlayerSystem;
+package GUI.PlayerSystem;
 public class CurrentPlayer {
     private String name;
     private int[] highScore;

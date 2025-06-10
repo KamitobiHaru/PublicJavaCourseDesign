@@ -1,4 +1,4 @@
-package gui;
+package GUI;
 import java.awt.*;
 import java.io.IOException;
 import javax.swing.*;
@@ -14,7 +14,7 @@ public class Help extends JDialog {
         textPane.setEditable(false);
         try {
             // load help file
-            textPane.setPage(getClass().getResource("/gui/html/HelpText.html"));
+            textPane.setPage(getClass().getResource("/GUI/html/HelpText.html"));
         } catch (IOException e) {
             //help file doesn't exist
             textPane.setText("<h2>当前帮助内容不可用</h2>");

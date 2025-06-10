@@ -1,4 +1,4 @@
-package gui;
+package GUI;
 import javax.swing.*;
 import java.awt.*;
 public class ExceptionDial extends JDialog {

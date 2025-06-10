@@ -3,8 +3,8 @@ skinparam classAttributeIconSize 0
 skinparam classFontSize 12
 skinparam classAttributeFontSize 11
 skinparam classMethodFontSize 11
-skinparam nodesep 80
-skinparam ranksep 100
+skinparam nodesep 50
+skinparam ranksep 50
 skinparam linetype ortho
 
 class Application {
@@ -20,7 +20,7 @@ class JComboBox
 }
 class java.lang.Thread
 
-package "gui" {
+package "GUI" {
 package "PlayerSystem" {
     class CurrentPlayer {
         -name: String
@@ -49,12 +49,10 @@ package "PlayerSystem" {
         -confirmButton: JButton
         -guestButton: JButton
         -newPlayer: JButton
-        -nameTextField: JPasswordField
+        -nameTextField: JTextField
+        -passwordField: JPasswordField
         -playerSet: boolean
         +LogInDial(owner: JFrame, player CurrentPlayer)
-        -setComponents(): void
-        -setActions(player: CurrentPlayer): void
-        -setLayout(): void
         +isPlayerSet(): boolean
     }
 
@@ -66,7 +64,11 @@ package "PlayerSystem" {
         -errorInfo: JLabel
         -confirmButton: JButton
         -cancelButton: JButton
-        -nameTextField: JPasswordField
+        -nameTextField: JTextField
+        -passwordField: JPasswordField
+        -confirmField: JPasswordField
+        +NewPlayerDial(owner: JDialog)
+        -setError(message: String): void
 }
     class PlayerInfo extends javax.Swing.JDialog
     LogInDial --> PlayersIO
@@ -130,8 +132,10 @@ package "PlayerSystem" {
                 -dragOffset: Point
                 -questionCompleted: int
                 -operators: Operator[]
-                +endGame(source: int): void
+                +{abstract}endGame(source: int): void
                 +calculateScore(): void
+                -checkSelectResult(): double
+                -checkInputResult(inputString: String): double
             }
 
             class TimedGame extends Game {
@@ -173,12 +177,12 @@ package "PlayerSystem" {
 
 
 
-    gui.Game.Game --> gui.GameResultDial
-    gui.Game.Game --> GamePane
-    gui.Game.Game --> CurrentPlayer
-    gui.Game.Game --> PlayersIO
-    gui.Game.Game --> gui.Symbols.Operators
-    gui.Game.Game --> gui.Game.SubExpression
+    GUI.Game.Game --> GUI.GameResultDial
+    GUI.Game.Game --> GamePane
+    GUI.Game.Game --> CurrentPlayer
+    GUI.Game.Game --> PlayersIO
+    GUI.Game.Game --> GUI.Symbols.Operators
+    GUI.Game.Game --> GUI.Game.SubExpression
     }
 
     class Welcome extends javax.Swing.JFrame {
@@ -200,6 +204,7 @@ package "PlayerSystem" {
     class GameResultDial extends javax.Swing.JDialog
     class GameInfo extends javax.Swing.JDialog
     class Help extends javax.Swing.JDialog
+    StartGameWindow --> GUI.Help
     class ExceptionDial extends javax.Swing.JDialog
     class Time extends javax.Swing.JLabel {
         -mode: int
@@ -235,18 +240,19 @@ GameLogic o-- Calculate
 ' 引用关系
 Application --> Welcome
 Welcome --> StartGameWindow
-StartGameWindow --> gui.Game.Game
+StartGameWindow --> GUI.Game.Game
 StartGameWindow --> GamePane
 StartGameWindow --> CurrentPlayer
 StartGameWindow --> PlayersIO
+StartGameWindow ..> LogInDial
 
 GamePane --> Time
 GamePane --> CardFrame
 GamePane --> Operators
 GamePane --> Pars
 GamePane --> GameLogic
-Time --> gui.Game.Game
-gui.Game.Game --> CurrentPlayer
+Time --> GUI.Game.Game
+GUI.Game.Game --> CurrentPlayer
 
 
 @enduml
