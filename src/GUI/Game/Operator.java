@@ -4,17 +4,17 @@ public class Operator{
     char op; // for identification
     String opString; // for output
     int level; // +- : 1, */ : 2
-    int method; // +*: 1, -/ : -1
+    boolean associates; // +*: 1, -/ : -1
     public Operator(char op){
         this.op = op;
         opString = Character.toString(op);
         // level: operate priority (+, - = 1; *, / = 2; () += 10 )
-        // method: +, * = 1 (does not change the operate behind); -, / = -1 (changes)
+        // associates: +, * = 1 (does not change the operate behind); -, / = -1 (changes)
         switch (op) {
-            case '+': level = 1; method = 1; break;
-            case '-': level = 1; method = -1; break;
-            case '*': level = 2; method = 1; break;
-            case '/': level = 2; method = -1; break;
+            case '+': level = 1; associates = true; break;
+            case '-': level = 1; associates = false; break;
+            case '*': level = 2; associates = true; break;
+            case '/': level = 2; associates = false; break;
         }
     }
     public String getString(){

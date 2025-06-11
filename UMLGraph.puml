@@ -147,7 +147,16 @@ package "GUI" {
             -checkSelectResult(): double
             -checkInputResult(inputString: String): double
         }
-
+        class Operator{
+            +op: char
+            +opString: String
+            +level: int
+            +associates: boolean
+            +Operator(op: char)
+            +getString(): String
+            +operate(): double
+        }
+        GameLogic --> Operator
         class TimedGame {
             +TimedGame(gamePane: GamePane, player: CurrentPlayer)
             +endGame(source: int): void

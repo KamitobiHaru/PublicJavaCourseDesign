@@ -119,6 +119,7 @@ public class StartGameWindow extends JFrame{
         game = null;
         gamePane = null;
         if (goOn){
+            setStatusBar();
             setSelectModePane();
             selectModePane.setVisible(true);
             initGamePane();

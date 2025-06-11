@@ -65,7 +65,7 @@ class Calculate{
                     temp3 = k.operate(temp2, values[3]);
                     if (is24(temp3)){
                         String[] par = {"(","(",")",")"};
-                        if (j.level < i.level || (j.level == i.level && j.method == 1)) par[2] = par[1] = "";
+                        if (j.level < i.level || (j.level == i.level && j.associates)) par[2] = par[1] = "";
                         if (k.level <= j.level) par[0] = par[3] = "";
                         return par[0]+ values[0]+j.opString+par[1]+ values[1]+i.opString+ values[2]+par[2]+par[3]+k.opString+ values[3];
                     }
@@ -106,7 +106,7 @@ class Calculate{
                     if (is24(temp3)){
                         String[] par = {"(","(",")",")"};
                         if (j.level <= i.level) par[2] = par[1] = "";
-                        if (k.level < j.level || (k.level == j.level && k.method == 1)) par[0] = par[3] = "";
+                        if (k.level < j.level || (k.level == j.level && k.associates)) par[0] = par[3] = "";
                         return values[0]+k.opString+par[0]+par[1]+ values[1]+i.opString+ values[2]+par[2]+j.opString+ values[3]+par[3];
                     }
                 }
@@ -125,8 +125,8 @@ class Calculate{
                     temp3 = k.operate(values[0], temp2);
                     if (is24(temp3)){
                         String[] par = {"(","(",")",")"};
-                        if (j.level < i.level || (j.level == i.level && j.method == 1)) par[2] = par[1] = "";
-                        if (k.level < j.level || (k.level == j.level && k.method == 1)) par[0] = par[3] = "";
+                        if (j.level < i.level || (j.level == i.level && j.associates)) par[2] = par[1] = "";
+                        if (k.level < j.level || (k.level == j.level && k.associates)) par[0] = par[3] = "";
                         return values[0]+k.opString+par[0]+ values[1]+j.opString+par[1]+ values[2]+i.opString+ values[3]+par[2]+par[3];
                     }
                 }
@@ -143,7 +143,7 @@ public class GameLogic extends Thread {
     //separated by comma
     public final static String SEPARATOR = ",";
     public String questionString = null;
-    //the overridden run method gets a new question set and store it in the string questionString
+    //the overridden run associates gets a new question set and store it in the string questionString
     @Override
     public void run(){
         String solution = Calculate.NOT_24;
