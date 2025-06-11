@@ -107,6 +107,7 @@ public abstract class Game {
                     }
                     gamePane.setLayout(gamePane.gl);
                     gamePane.revalidate();
+                    gamePane.repaint();
                 }
             }
             @Override

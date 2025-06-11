@@ -19,9 +19,9 @@ public class Pars extends JPanel{
         parButtons[1].setBackground(Color.GRAY);
         parButtons[1].setForeground(Color.WHITE);
         parButtons[0].setFont(new Font("Arial", Font.BOLD, 20));
-        parButtons[0].setMargin(new Insets(2,2,2,2));
+        parButtons[0].setMargin(new Insets(0,0,0,0));
         parButtons[1].setFont(new Font("Arial", Font.BOLD,20));
-        parButtons[1].setMargin(new Insets(2,2,2,2));
+        parButtons[1].setMargin(new Insets(0,0,0,0));
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         parButtons[0].setMaximumSize(new Dimension(30, 30));
         parButtons[0].setMinimumSize(new Dimension(25,25));
