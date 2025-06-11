@@ -29,9 +29,11 @@ public class GamePane extends JPanel {
     public GamePane(StartGameWindow owner) {
         this.owner = owner;
         // so that question can be set background
-        gameLogic.start();
         initUI();
         setLayout();
+        //noinspection CallToThreadRun
+        gameLogic.run(); // not start(). Continue after finishing
+        newQuestion();
     }
     private void initUI() {
         Font font = new Font("微软雅黑", Font.BOLD, 16);
@@ -90,7 +92,6 @@ public class GamePane extends JPanel {
             ops[i] = new Operators();
         }
     }
-
     private void setLayout() {
         gl = new GroupLayout(this);
         setLayout(gl);

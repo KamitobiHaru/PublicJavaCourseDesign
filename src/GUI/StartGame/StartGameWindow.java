@@ -135,7 +135,6 @@ public class StartGameWindow extends JFrame{
                 selectModePane.tButton.setEnabled(false);
             });
             gamePane = new GamePane(StartGameWindow.this);
-            gamePane.newQuestion();
             EventQueue.invokeLater(() -> {
                 selectModePane.iButton.setEnabled(true);
                 selectModePane.tButton.setEnabled(true);
