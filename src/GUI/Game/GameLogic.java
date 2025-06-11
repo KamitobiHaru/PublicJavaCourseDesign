@@ -1,5 +1,6 @@
 package GUI.Game;
 class Calculate{
+    public final static String NOT_24 = "NOT_24";
     Operator[] ops = {
         new Operator('+'), 
         new Operator('-'), 
@@ -16,20 +17,20 @@ class Calculate{
                         if (m == k || m == j || m == i) continue;
                         String way;
                         way = chanceOne(values[i], values[j], values[k], values[m]);
-                        if (!way.equals("-1")) return way;
+                        if (!way.equals(NOT_24)) return way;
                         way = chanceTwo(values[i], values[j], values[k], values[m]);
-                        if (!way.equals("-1")) return way;
+                        if (!way.equals(NOT_24)) return way;
                         way = chanceThree(values[i], values[j], values[k], values[m]);
-                        if (!way.equals("-1")) return way;
+                        if (!way.equals(NOT_24)) return way;
                         way = chanceFour(values[i], values[j], values[k], values[m]);
-                        if (!way.equals("-1")) return way;
+                        if (!way.equals(NOT_24)) return way;
                         way = chanceFive(values[i], values[j], values[k], values[m]);
-                        if (!way.equals("-1")) return way;
+                        if (!way.equals(NOT_24)) return way;
                     }
                 }
             }
         }
-        return "-1";
+        return NOT_24;
     }
     //((axb)xc)xd
     private String chanceOne(int... values){
@@ -51,7 +52,7 @@ class Calculate{
                 }
             }
         }
-        return "-1";
+        return NOT_24;
     }
     // (ax(bxc))xd
     private String chanceTwo(int... values){
@@ -71,7 +72,7 @@ class Calculate{
                 }
             }
         }
-        return "-1";
+        return NOT_24;
     }
     //(axb)x(cxd)
     private String chanceThree(int... values){
@@ -91,7 +92,7 @@ class Calculate{
                 }
             }
         }
-        return "-1";
+        return NOT_24;
     }
     //ax((bxc)xd)
     private String chanceFour(int... values){
@@ -111,7 +112,7 @@ class Calculate{
                 }
             }
         }
-        return "-1";
+        return NOT_24;
     }
     //ax(bx(cxd))
     private String chanceFive(int... values){
@@ -131,7 +132,7 @@ class Calculate{
                 }
             }
         }
-        return "-1";
+        return NOT_24;
     }
     private boolean is24 (double num){
         return Math.abs(24 - num) < 1e-3;  
@@ -145,9 +146,9 @@ public class GameLogic extends Thread {
     //the overridden run method gets a new question set and store it in the string questionString
     @Override
     public void run(){
-        String solution = "-1";
+        String solution = Calculate.NOT_24;
         int[] values = new int[4];
-        while (solution.equals("-1")) {
+        while (solution.equals(Calculate.NOT_24)) {
             Calculate c = new Calculate();
             for (int i = 0; i < 4; i++) {
                 values[i] = (int) ((Math.random()) * 13) + 1;

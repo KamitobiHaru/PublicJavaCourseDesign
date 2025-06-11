@@ -192,7 +192,9 @@ package "GUI" {
         -imageIcon: ImageIcon
         +Welcome()
     }
-    class GameResultDial extends javax.Swing.JDialog
+    class GameResultDial extends javax.Swing.JDialog{
+        +GameResultDial()
+    }
     class GameInfo extends javax.Swing.JDialog{
         +GameInfo()
     }

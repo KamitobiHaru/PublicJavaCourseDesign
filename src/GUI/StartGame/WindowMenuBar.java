@@ -1,7 +1,5 @@
 package GUI.StartGame;
-
 import javax.swing.*;
-
 public class WindowMenuBar extends JMenuBar {
     JMenuItem gameInfo, exit, helpItem, logOut, userInfo;
     public WindowMenuBar(){
