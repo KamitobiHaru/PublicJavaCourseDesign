@@ -4,7 +4,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.Objects;
-
 public class GameResultDial extends JDialog{
     JLabel name, mode, score, oriHi, uniHi;
     JButton confirm;
