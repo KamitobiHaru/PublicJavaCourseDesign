@@ -35,6 +35,7 @@ public class GamePane extends JPanel {
     }
     private void initUI() {
         Font font = new Font("微软雅黑", Font.BOLD, 16);
+        setBackground(new Color(248, 241, 243));
         gameTimer = new Time();
         cardFrames = new CardFrame[4];
         cardSelects = new CardFrame[4];
