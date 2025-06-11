@@ -3,6 +3,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.util.Objects;
+
 public class GameResultDial extends JDialog{
     JLabel name, mode, score, oriHi, uniHi;
     JButton confirm;
@@ -15,6 +17,8 @@ public class GameResultDial extends JDialog{
     private void initUI(JFrame owner, String name, int mode, int score, int oriHighScore, int uniHighScore) {
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setSize(450, 300);
+        var icon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/GUI/images/icon.png")));
+        setIconImage(icon.getImage());
         setResizable(false);
         setLocationRelativeTo(owner);
         this.name = new JLabel("玩家：" + name);

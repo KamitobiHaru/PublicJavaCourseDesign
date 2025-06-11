@@ -1,6 +1,7 @@
 package GUI.PlayerSystem;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Objects;
 import javax.swing.*;
 public class LogInDial extends JDialog{
 	private String name = null;
@@ -22,6 +23,8 @@ public class LogInDial extends JDialog{
         setLayout();
     }
     private void setComponents(){
+        var icon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/GUI/images/icon.png")));
+        setIconImage(icon.getImage());
         nameLabel = new JLabel("用户名：");
         passwordLabel = new JLabel("密码：    ");
         localInfo = new JLabel("用户信息保存在本地。");

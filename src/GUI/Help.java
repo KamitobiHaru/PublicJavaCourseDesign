@@ -1,12 +1,15 @@
 package GUI;
 import java.awt.*;
 import java.io.IOException;
+import java.util.Objects;
 import javax.swing.*;
 public class Help extends JDialog {
     public Help(JFrame owner) {
         super(owner, "帮助", false);
         setSize(585, 720);
         setResizable(false);
+        var icon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/GUI/images/icon.png")));
+        setIconImage(icon.getImage());
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLocation(new Point(owner.getLocation().x + 720, owner.getLocation().y));
         var textPane = new JTextPane();

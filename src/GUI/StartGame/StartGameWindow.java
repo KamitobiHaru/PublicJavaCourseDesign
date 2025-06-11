@@ -9,6 +9,7 @@ import GUI.PlayerSystem.PlayersIO;
 import java.awt.*;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.util.Objects;
 import javax.swing.*;
 public class StartGameWindow extends JFrame{
     public CurrentPlayer player;
@@ -27,6 +28,8 @@ public class StartGameWindow extends JFrame{
         this.setVisible(true);
     }
     private void setWindowBasics(){
+        var icon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/GUI/images/icon.png")));
+        setIconImage(icon.getImage());
         setTitle("24点");
         setSize(1080,720);
         setLocationRelativeTo(null);

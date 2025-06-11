@@ -4,9 +4,9 @@ import java.awt.*;
 import java.util.Objects;
 import javax.swing.*;
 public class Time extends JLabel{
-    public final static int COUNT_DOWN = 1, COUNT_UP = 0;
+    public final static int COUNT_DOWN = 1, COUNT_UP = 0, NOT_SET = -1;
     private int timeSec, timeMin;
-    private int mode;
+    public int mode = NOT_SET;
     private int currentMin, currentSec;
     private Game game;
     public Timer timer;

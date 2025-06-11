@@ -1,5 +1,6 @@
 package GUI;
 import java.awt.Font;
+import java.util.Objects;
 import javax.swing.*;
 public class GameInfo extends JDialog {
     private JLabel icon, name, author, description;
@@ -10,6 +11,10 @@ public class GameInfo extends JDialog {
     }
     private void initUI(){
         setSize(400,300);
+        var iconImage = new ImageIcon(Objects.requireNonNull(getClass().getResource("/GUI/images/icon.png")));
+        setIconImage(iconImage.getImage());
+        icon = new JLabel();
+        icon.setIcon(iconImage);
         setResizable(false);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -28,6 +33,7 @@ public class GameInfo extends JDialog {
                         .addGap(0,0,Integer.MAX_VALUE)
                         .addGroup(
                                 gl.createParallelGroup(GroupLayout.Alignment.CENTER,false)
+                                        .addComponent(icon)
                                         .addComponent(name)
                                         .addComponent(author)
                                         .addComponent(description)
@@ -36,6 +42,8 @@ public class GameInfo extends JDialog {
         );
         gl.setVerticalGroup(
                 gl.createSequentialGroup()
+                        .addGap(0,0,Integer.MAX_VALUE)
+                        .addComponent(icon)
                         .addGap(0,0,Integer.MAX_VALUE)
                         .addComponent(name)
                         .addGap(0,0,Integer.MAX_VALUE)
