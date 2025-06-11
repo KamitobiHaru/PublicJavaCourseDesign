@@ -26,8 +26,7 @@ public class Welcome extends JFrame{
         setSize(652,375);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        // icon not set yet...
-        var icon = new ImageIcon();
+        var icon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/GUI/images/icon.png")));
         setIconImage(icon.getImage());
         setMinimumSize(new Dimension(300,200));
     }
