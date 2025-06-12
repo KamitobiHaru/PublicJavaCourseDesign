@@ -21,7 +21,7 @@ public class GameInfo extends JDialog {
         name = new JLabel("24点");
         name.setFont(new Font("微软雅黑", Font.BOLD, 20));
         author = new JLabel("By 张思远，程亚迪");
-        description = new JLabel("Java课程设计    ver 0.9.0-beta");
+        description = new JLabel("Java课程设计    ver 1.0.0");
     }
     private void setLayout(){
         var gl = new GroupLayout(getContentPane());
