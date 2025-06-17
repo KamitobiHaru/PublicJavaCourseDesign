@@ -96,15 +96,17 @@ public abstract class Game {
                         if (((CardFrame)target).isEmpty()){
                             ((CardFrame)target).setFilled(cardSelected);
                             cardDragged.setEmpty();
-                            cardSelected = null;
-                            dragging = false;
+                        } else {
+                            var exchangeTemp = ((CardFrame) target).card;
+                            ((CardFrame) target).setFilled(cardSelected);
+                            cardDragged.setFilled(exchangeTemp);
                         }
                     }
                     else {
                         cardDragged = null;
-                        cardSelected = null;
-                        dragging = false;
                     }
+                    cardSelected = null;
+                    dragging = false;
                     gamePane.setLayout(gamePane.gl);
                     gamePane.revalidate();
                     gamePane.repaint();
@@ -347,16 +349,7 @@ public abstract class Game {
     }
     private boolean checkNumLegal(char[] simplifiedChars){
         char SEPARATOR = ' ';
-        StringBuilder numStringBuilder = new StringBuilder();
-        for (char simplifiedChar : simplifiedChars){
-            if (isDigit(simplifiedChar))
-                numStringBuilder.append(simplifiedChar);
-            else if (!numStringBuilder.isEmpty()
-                    && isOperator(simplifiedChar)
-                    && numStringBuilder.charAt(numStringBuilder.length() - 1) != SEPARATOR)
-                numStringBuilder.append(SEPARATOR);
-        }
-        String[] numStrings = numStringBuilder.toString().split(Character.toString(SEPARATOR));
+        String[] numStrings = initNumStrings(simplifiedChars, SEPARATOR);
         if (numStrings.length != 4)
             return false;
         int[] values = new int[4];
@@ -367,6 +360,20 @@ public abstract class Game {
         Arrays.sort(gamePane.question);
         return Arrays.equals(values, gamePane.question);
     }
+
+    private String[] initNumStrings(char[] simplifiedChars, char SEPARATOR) {
+        StringBuilder numStringBuilder = new StringBuilder();
+        for (char simplifiedChar : simplifiedChars){
+            if (isDigit(simplifiedChar))
+                numStringBuilder.append(simplifiedChar);
+            else if (!numStringBuilder.isEmpty()
+                    && isOperator(simplifiedChar)
+                    && numStringBuilder.charAt(numStringBuilder.length() - 1) != SEPARATOR)
+                numStringBuilder.append(SEPARATOR);
+        }
+        return numStringBuilder.toString().split(Character.toString(SEPARATOR));
+    }
+
     private int initSubExpressionsArrayList(ArrayList<SubExpression> subExpressions, char[] simplifiedChars){
         StringBuilder numStringBuilder;
         //traverse through all operators to check the front and hind values and add to ArrayList cal
