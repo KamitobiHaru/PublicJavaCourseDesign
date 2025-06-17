@@ -101,6 +101,8 @@ public abstract class Game {
                             ((CardFrame) target).setFilled(cardSelected);
                             cardDragged.setFilled(exchangeTemp);
                         }
+                        cardSelected = null;
+                        dragging = false;
                     }
                     else {
                         cardDragged = null;
