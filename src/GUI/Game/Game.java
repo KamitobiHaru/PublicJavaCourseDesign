@@ -96,9 +96,13 @@ public abstract class Game {
                         if (((CardFrame)target).isEmpty()){
                             ((CardFrame)target).setFilled(cardSelected);
                             cardDragged.setEmpty();
-                            cardSelected = null;
-                            dragging = false;
+                        } else {
+                            var exchangeTemp = ((CardFrame) target).card;
+                            ((CardFrame) target).setFilled(cardSelected);
+                            cardDragged.setFilled(exchangeTemp);
                         }
+                        cardSelected = null;
+                        dragging = false;
                     }
                     else {
                         cardDragged = null;
